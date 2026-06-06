@@ -1,0 +1,61 @@
+
+# macOS
+
+.DS_Store
+
+.AppleDouble
+
+# Python
+
+__pycache__/
+
+*.pyc
+
+*.pyo
+
+*.pyd
+
+*.pdb
+
+.env
+
+venv/
+
+.venv/
+
+*.egg-info/
+
+dist/
+
+build/
+
+# Node
+
+node_modules/
+
+# ML model training data (too large)
+
+ml-service/training/data/
+
+ml-service/training/weights/*.pth
+
+ml-service/training/weights/*.pt
+
+# Keep ONNX (needed for deployment, under 15MB)
+
+!ml-service/app/model/head_pose.onnx
+
+# Logs
+
+*.log
+
+# IDE
+
+.vscode/
+
+.idea/
+
+# Uploads
+
+uploads/
+
