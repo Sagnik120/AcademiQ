@@ -20,26 +20,7 @@ GRADING INSTRUCTIONS:
 - marks_awarded must be between 0 and {max_marks}. Do NOT exceed {max_marks}.
 - percentage = (marks_awarded / {max_marks}) * 100, rounded to 2 decimal places.
 
-Respond ONLY with the JSON object below. No preamble. No markdown fences. No extra text.
-
-{{
-  "marks_awarded": <float>,
-  "percentage": <float>,
-  "overall_feedback": "<one paragraph for the student>",
-  "citation_highlights": {{
-    "earned_marks": [
-      {{"text": "<exact phrase from student answer>", "reason": "<why this earned marks>", "marks": <float>}}
-    ],
-    "lost_marks": [
-      {{"text": "<exact phrase from student answer>", "reason": "<why this lost marks>", "marks": <float>}}
-    ]
-  }},
-  "rubric_breakdown": {{
-    "conceptual_accuracy": {{"score": <float>, "comment": "<short comment>"}},
-    "completeness":         {{"score": <float>, "comment": "<short comment>"}},
-    "clarity":              {{"score": <float>, "comment": "<short comment>"}}
-  }}
-}}"""
+"""
 
 
 def build_grading_prompt(

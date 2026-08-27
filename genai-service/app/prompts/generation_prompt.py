@@ -13,41 +13,7 @@ TASK: Generate EXACTLY {mcq_count} MCQ, {msq_count} MSQ, and {text_count} text q
 - difficulty_level: integer from 1 (easiest) to 5 (hardest), matching the difficulty hint.
 - marks: a positive float appropriate to the question complexity.
 
-Respond ONLY with a JSON array. No preamble. No markdown fences. No extra text.
-
-[
-  {{
-    "type": "mcq",
-    "question_text": "<question>",
-    "marks": <float>,
-    "difficulty_level": <int 1-5>,
-    "options": [
-      {{"option_text": "<text>", "is_correct": true}},
-      {{"option_text": "<text>", "is_correct": false}},
-      {{"option_text": "<text>", "is_correct": false}},
-      {{"option_text": "<text>", "is_correct": false}}
-    ]
-  }},
-  {{
-    "type": "msq",
-    "question_text": "<question>",
-    "marks": <float>,
-    "difficulty_level": <int 1-5>,
-    "options": [
-      {{"option_text": "<text>", "is_correct": true}},
-      {{"option_text": "<text>", "is_correct": true}},
-      {{"option_text": "<text>", "is_correct": false}},
-      {{"option_text": "<text>", "is_correct": false}}
-    ]
-  }},
-  {{
-    "type": "text",
-    "question_text": "<question>",
-    "marks": <float>,
-    "difficulty_level": <int 1-5>,
-    "reference_answer": "<model answer for grading>"
-  }}
-]"""
+"""
 
 
 def build_generation_prompt(
