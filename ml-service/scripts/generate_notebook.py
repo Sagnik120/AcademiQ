@@ -7,7 +7,7 @@ nb.cells.extend([
     new_markdown_cell("# AcademiQ ML Proctoring - Model Training Pipeline\n\nThis notebook trains and compares multiple models (MobileNetV2, ResNet18, EfficientNetB0) for Head Pose Estimation to determine the best performer for deployment. It uses the 300W-LP dataset."),
     
     new_markdown_cell("## 1. Setup & Dependencies"),
-    new_code_cell("""!pip install -q mediapipe onnx onnxruntime
+    new_code_cell("""!pip install -q mediapipe onnx onnxruntime onnxscript
 import os
 import cv2
 import numpy as np
@@ -30,14 +30,26 @@ os.makedirs(DRIVE_DIR, exist_ok=True)
 os.makedirs(os.path.join(DRIVE_DIR, 'results', 'loss'), exist_ok=True)
 os.makedirs(os.path.join(DRIVE_DIR, 'results', 'visualization'), exist_ok=True)"""),
 
-    new_markdown_cell("## 3. Dataset Download (300W-LP)"),
-    new_code_cell("""# Note: 300W-LP is usually downloaded via a specific gdown link or uploaded directly.
-# Replace this with the actual gdown ID if you have a public mirror, or upload the zip to your drive manually.
-# Example: !gdown --id <PUBLIC_FILE_ID> -O 300W_LP.zip
-# !unzip -q 300W_LP.zip -d /content/data
+    new_markdown_cell("## 3. Dataset Download (AFLW2000-3D)\n\nWe will use the AFLW2000-3D dataset, which contains 2000 high-quality images with precise 3D face and pose annotations. This is an excellent, reliable dataset for real-world head pose estimation."),
+    new_code_cell("""import urllib.request
+import zipfile
 
-print("Please ensure the 300W-LP dataset is extracted to /content/data/300W_LP")
-DATA_DIR = '/content/data/300W_LP'"""),
+dataset_url = "http://www.cbsr.ia.ac.cn/users/xiangyuzhu/projects/3DDFA/Database/AFLW2000-3D.zip"
+zip_path = "/content/AFLW2000-3D.zip"
+data_dir = "/content/data/AFLW2000"
+
+if not os.path.exists(data_dir):
+    print("Downloading AFLW2000-3D dataset (this may take a minute)...")
+    urllib.request.urlretrieve(dataset_url, zip_path)
+    print("Extracting dataset...")
+    os.makedirs("/content/data", exist_ok=True)
+    with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+        zip_ref.extractall("/content/data")
+    print("Dataset ready!")
+else:
+    print("Dataset already exists!")
+
+DATA_DIR = data_dir"""),
 
     new_markdown_cell("## 4. PyTorch Dataset Definition"),
     new_code_cell("""class HeadPoseDataset(Dataset):
@@ -47,42 +59,82 @@ DATA_DIR = '/content/data/300W_LP'"""),
         self.image_paths = []
         self.labels = []
         
-        # Placeholder for dataset loading logic
-        # For a real implementation, you would walk through DATA_DIR, 
-        # pair .jpg files with .mat files, extract yaw, pitch, roll using scipy.io.loadmat,
-        # crop the face using MediaPipe, and append to these lists.
-        
-        # Simulated dummy data for compilation testing
-        for i in range(100):
-            self.image_paths.append(f"dummy_{i}.jpg")
-            self.labels.append(np.array([0.0, 0.0, 0.0], dtype=np.float32))
+        print(f"Scanning {data_dir} for .jpg and .mat pairs...")
+        if not os.path.exists(data_dir):
+            print(f"WARNING: Directory {data_dir} not found. Generating dummy data for testing.")
+            for i in range(100):
+                self.image_paths.append(f"dummy_{i}")
+                self.labels.append(np.array([0.0, 0.0, 0.0], dtype=np.float32))
+            return
+            
+        # Walk through dataset directory finding image and mat pairs
+        for root, dirs, files in os.walk(data_dir):
+            for file in files:
+                if file.endswith('.jpg'):
+                    base_name = file[:-4]
+                    mat_file = base_name + '.mat'
+                    mat_path = os.path.join(root, mat_file)
+                    img_path = os.path.join(root, file)
+                    
+                    if os.path.exists(mat_path):
+                        try:
+                            # 300W-LP / AFLW2000 format
+                            mat_data = sio.loadmat(mat_path)
+                            pose_para = mat_data['Pose_Para'][0][:3] # pitch, yaw, roll
+                            # Convert to yaw, pitch, roll to match our inference engine
+                            pitch, yaw, roll = pose_para[0], pose_para[1], pose_para[2]
+                            
+                            self.image_paths.append(img_path)
+                            self.labels.append(np.array([yaw, pitch, roll], dtype=np.float32))
+                        except Exception as e:
+                            continue
+                            
+        print(f"Found {len(self.image_paths)} valid face images with pose labels.")
             
     def __len__(self):
         return len(self.image_paths)
         
     def __getitem__(self, idx):
-        # Simulated loading
-        img = Image.fromarray(np.uint8(np.random.rand(224, 224, 3) * 255))
+        path = self.image_paths[idx]
         label = self.labels[idx]
+        
+        if path.startswith("dummy_"):
+            img = Image.fromarray(np.uint8(np.random.rand(224, 224, 3) * 255))
+        else:
+            img = Image.open(path).convert('RGB')
         
         if self.transform:
             img = self.transform(img)
             
         return img, torch.tensor(label)
 
-transform = transforms.Compose([
+# Data Augmentation for real-world robustness
+train_transform = transforms.Compose([
+    transforms.Resize((224, 224)),
+    transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.1), # Simulate varying webcam lighting
+    transforms.ToTensor(),
+    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+])
+
+val_transform = transforms.Compose([
     transforms.Resize((224, 224)),
     transforms.ToTensor(),
     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 ])
 
-dataset = HeadPoseDataset(DATA_DIR, transform=transform)
-train_size = int(0.8 * len(dataset))
-val_size = len(dataset) - train_size
-train_dataset, val_dataset = torch.utils.data.random_split(dataset, [train_size, val_size])
+# Load full dataset without transforms, then split, then apply transforms
+full_dataset = HeadPoseDataset(DATA_DIR, transform=None)
 
-train_loader = DataLoader(train_dataset, batch_size=32, shuffle=True)
-val_loader = DataLoader(val_dataset, batch_size=32, shuffle=False)"""),
+train_size = int(0.8 * len(full_dataset))
+val_size = len(full_dataset) - train_size
+train_subset, val_subset = torch.utils.data.random_split(full_dataset, [train_size, val_size])
+
+# Apply respective transforms
+train_subset.dataset.transform = train_transform
+val_subset.dataset.transform = val_transform
+
+train_loader = DataLoader(train_subset, batch_size=32, shuffle=True)
+val_loader = DataLoader(val_subset, batch_size=32, shuffle=False)"""),
 
     new_markdown_cell("## 5. Model Definitions (MobileNetV2, ResNet18, EfficientNet)"),
     new_code_cell("""def get_mobilenet_v2():
@@ -163,8 +215,9 @@ best_loss = float('inf')
 best_name = None
 best_model = None
 
+# Train for 20 epochs for high-quality convergence
 for name, model in models_to_test.items():
-    trained_model, final_val_loss = train_model(model, name, epochs=2)
+    trained_model, final_val_loss = train_model(model, name, epochs=20)
     if final_val_loss < best_loss:
         best_loss = final_val_loss
         best_name = name
