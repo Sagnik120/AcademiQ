@@ -57,9 +57,9 @@ Max Marks: {max_marks}
     retry=retry_if_exception_type(Exception),
     reraise=True,
 )
-def _call_chain(question, student_answer, reference_answer, max_marks, rubric_section):
+async def _call_chain(question, student_answer, reference_answer, max_marks, rubric_section):
     chain = _get_chain()
-    return chain.invoke({
+    return await chain.ainvoke({
         "question": question,
         "student_answer": student_answer,
         "reference_answer": reference_answer,
@@ -71,7 +71,7 @@ def _call_chain(question, student_answer, reference_answer, max_marks, rubric_se
 async def grade_answer(request: GradeRequest) -> GradeResponse:
     rubric_section = f"Additional rubric: {request.grading_rubric}" if request.grading_rubric else ""
 
-    result: GradeResponse = _call_chain(
+    result: GradeResponse = await _call_chain(
         question=request.question,
         student_answer=request.student_answer,
         reference_answer=request.reference_answer,
