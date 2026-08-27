@@ -57,9 +57,9 @@ difficulty_level must be 1-5. marks must be positive."""),
     retry=retry_if_exception_type(Exception),
     reraise=True,
 )
-def _call_chain(prompt_body: str) -> QuestionsOutput:
+async def _call_chain(prompt_body: str) -> QuestionsOutput:
     chain = _get_chain()
-    return chain.invoke({"prompt_body": prompt_body})
+    return await chain.ainvoke({"prompt_body": prompt_body})
 
 
 def _chunk_content(text: str) -> list[str]:
@@ -96,7 +96,7 @@ async def generate_questions(request: GenerateRequest) -> GenerateResponse:
         )
 
         try:
-            result: QuestionsOutput = _call_chain(prompt_body)
+            result: QuestionsOutput = await _call_chain(prompt_body)
             all_questions.extend(result.questions)
         except Exception as e:
             logger.error("Generation failed on chunk %d: %s", i, e)
