@@ -31,8 +31,8 @@ os.makedirs(os.path.join(DRIVE_DIR, 'results', 'loss'), exist_ok=True)
 os.makedirs(os.path.join(DRIVE_DIR, 'results', 'visualization'), exist_ok=True)"""),
 
     new_markdown_cell("## 3. Dataset Download (AFLW2000-3D)\n\nWe will use the AFLW2000-3D dataset, which contains 2000 high-quality images with precise 3D face and pose annotations. This is an excellent, reliable dataset for real-world head pose estimation."),
-    new_code_cell("""import urllib.request
-import zipfile
+    new_code_cell("""import zipfile
+import os
 
 dataset_url = "http://www.cbsr.ia.ac.cn/users/xiangyuzhu/projects/3DDFA/Database/AFLW2000-3D.zip"
 zip_path = "/content/AFLW2000-3D.zip"
@@ -40,7 +40,9 @@ data_dir = "/content/data/AFLW2000"
 
 if not os.path.exists(data_dir):
     print("Downloading AFLW2000-3D dataset (this may take a minute)...")
-    urllib.request.urlretrieve(dataset_url, zip_path)
+    # Using wget with a browser User-Agent because the server blocks default Python urllib requests
+    !wget -U "Mozilla/5.0" -qO $zip_path $dataset_url
+    
     print("Extracting dataset...")
     os.makedirs("/content/data", exist_ok=True)
     with zipfile.ZipFile(zip_path, 'r') as zip_ref:
