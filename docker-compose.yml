@@ -1,0 +1,99 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: academiq-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-prepez_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-your_password}
+      POSTGRES_DB: ${POSTGRES_DB:-prepez_db}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-prepez_user} -d ${POSTGRES_DB:-prepez_db}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - academiq-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: academiq-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - academiq-network
+
+  backend-main:
+    build:
+      context: ./backend-main
+      dockerfile: Dockerfile
+    container_name: academiq-backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      APP_NAME: AcademiQ
+      APP_ENV: development
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-prepez_user}:${POSTGRES_PASSWORD:-your_password}@postgres:5432/${POSTGRES_DB:-prepez_db}
+      REDIS_URL: redis://redis:6379
+      ML_SERVICE_URL: http://ml-service:8001
+      GENAI_SERVICE_URL: http://genai-service:8002
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost:5500}
+      SECRET_KEY: ${SECRET_KEY:-prepez_super_secret_key_change_this_in_production_32chars}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - academiq-network
+
+  ml-service:
+    build:
+      context: ./ml-service
+      dockerfile: Dockerfile
+    container_name: academiq-ml-service
+    restart: unless-stopped
+    ports:
+      - "8001:8001"
+    environment:
+      PORT: 8001
+    networks:
+      - academiq-network
+
+  genai-service:
+    build:
+      context: ./genai-service
+      dockerfile: Dockerfile
+    container_name: academiq-genai-service
+    restart: unless-stopped
+    ports:
+      - "8002:8002"
+    environment:
+      PORT: 8002
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      ALLOWED_ORIGINS: http://localhost:3000,http://localhost:8000,http://backend-main:8000
+    networks:
+      - academiq-network
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  academiq-network:
+    driver: bridge
