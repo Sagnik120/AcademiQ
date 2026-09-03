@@ -1,9 +1,11 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, BackgroundTasks
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import select, and_
 from typing import List
 from app.database import get_db
 from app.dependencies import require_educator, require_learner
 from app.models.user import User
+from app.models.exam import AttemptResponse, GradeStatus
 from app.schemas.exam import (
     ExamCreateRequest, ExamUpdateRequest, ExamResponse,
     AddQuestionRequest, ExamQuestionResponse,
@@ -105,8 +107,28 @@ async def respond(attempt_id: str, data: SubmitResponseRequest, current_user: Us
     return MessageResponse(message="Response saved")
 
 @router.post("/learner/attempts/{attempt_id}/submit", response_model=AttemptResultResponse)
-async def submit(attempt_id: str, current_user: User = Depends(require_learner), db: AsyncSession = Depends(get_db)):
+async def submit(
+    attempt_id: str,
+    background_tasks: BackgroundTasks,
+    current_user: User = Depends(require_learner),
+    db: AsyncSession = Depends(get_db)
+):
     attempt = await submit_attempt(attempt_id, current_user, db)
+
+    # Check if any responses are pending LLM evaluation
+    pending_check = await db.execute(
+        select(AttemptResponse.id).where(
+            and_(
+                AttemptResponse.attempt_id == attempt_id,
+                AttemptResponse.grade_status == GradeStatus.pending,
+                AttemptResponse.is_skipped == False
+            )
+        ).limit(1)
+    )
+    if pending_check.scalar_one_or_none():
+        from app.services.grading_service import grade_attempt_text_responses
+        background_tasks.add_task(grade_attempt_text_responses, str(attempt.id))
+
     return AttemptResultResponse(
         attempt_id=str(attempt.id), exam_id=str(attempt.exam_id),
         status=attempt.status if isinstance(attempt.status, str) else attempt.status.value,
