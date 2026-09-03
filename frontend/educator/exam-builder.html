@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Assessment Builder — Educator Studio</title>
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+</head>
+<body style="min-height: 100vh; display: flex; flex-direction: column;">
+
+  <!-- Header -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <a href="/educator/dashboard.html" class="brand">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--secondary);">
+            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/>
+          </svg>
+          <span>AcademiQ</span>
+        </a>
+        <span class="badge badge-info">Exam Authoring</span>
+      </div>
+
+      <div style="display: flex; gap: 0.75rem;">
+        <a href="/educator/dashboard.html" class="btn btn-outline btn-sm">Cancel</a>
+        <button class="btn btn-secondary btn-sm" onclick="publishExam()">Publish Assessment</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" style="flex: 1; padding: 2.5rem 1.5rem; max-width: 960px;">
+    
+    <!-- Assessment Configuration -->
+    <div class="card" style="margin-bottom: 2rem;">
+      <h3 style="margin-bottom: 1.25rem;">1. Assessment Parameters</h3>
+
+      <div class="form-group">
+        <label class="form-label">Exam Title</label>
+        <input type="text" class="form-control" id="exam-title-input" value="Quantum Computing Midterm Assessment" required>
+      </div>
+
+      <div class="grid grid-cols-3 gap-2">
+        <div class="form-group">
+          <label class="form-label">Duration (Minutes)</label>
+          <input type="number" class="form-control" value="60" min="10" max="300">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Total Marks</label>
+          <input type="number" class="form-control" value="50.0" step="1.0">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Passing Marks</label>
+          <input type="number" class="form-control" value="25.0" step="1.0">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Student Instructions</label>
+        <textarea class="form-control" style="min-height: 70px;">All questions are mandatory. Fullscreen mode and continuous webcam feed required throughout the testing duration.</textarea>
+      </div>
+    </div>
+
+    <!-- Proctoring Settings -->
+    <div class="card" style="margin-bottom: 2rem; border-color: rgba(99, 102, 241, 0.3);">
+      <h3 style="margin-bottom: 1rem;">2. Biometric Proctoring Controls</h3>
+      
+      <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+        <label style="display: flex; align-items: center; gap: 0.75rem; cursor: pointer;">
+          <input type="checkbox" checked style="width: 18px; height: 18px; accent-color: var(--primary);">
+          <div>
+            <div style="font-weight: 600; color: #fff;">Enable Real-Time Computer Vision Proctoring</div>
+            <div style="font-size: 0.8rem; color: var(--text-muted);">Transmits candidate webcam frames at 2.0s intervals for ONNX head pose & face detection</div>
+          </div>
+        </label>
+
+        <label style="display: flex; align-items: center; gap: 0.75rem; cursor: pointer;">
+          <input type="checkbox" checked style="width: 18px; height: 18px; accent-color: var(--primary);">
+          <div>
+            <div style="font-weight: 600; color: #fff;">Flag Tab Switching & Window Focus Loss</div>
+            <div style="font-size: 0.8rem; color: var(--text-muted);">Deducts trust score upon visibility changes and logs audit alerts</div>
+          </div>
+        </label>
+
+        <label style="display: flex; align-items: center; gap: 0.75rem; cursor: pointer;">
+          <input type="checkbox" checked style="width: 18px; height: 18px; accent-color: var(--primary);">
+          <div>
+            <div style="font-weight: 600; color: #fff;">Automated GenAI Essay Grading with Rubrics</div>
+            <div style="font-size: 0.8rem; color: var(--text-muted);">Scores short essay questions across Accuracy, Completeness, Clarity with citation highlights</div>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <!-- Selected Questions -->
+    <div class="card" style="margin-bottom: 2rem;">
+      <div class="card-header">
+        <h3>3. Questions in Assessment (3 Selected)</h3>
+        <a href="/educator/question-bank.html" class="btn btn-outline btn-sm">+ Add from Bank</a>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+        <div style="padding: 0.75rem 1rem; border-radius: var(--radius-sm); background: rgba(15, 21, 35, 0.6); border: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center;">
+          <span>1. What mathematical entity represents a pure state in quantum mechanics? [MCQ - 2.0 Marks]</span>
+          <span class="badge badge-success">AI Generated</span>
+        </div>
+        <div style="padding: 0.75rem 1rem; border-radius: var(--radius-sm); background: rgba(15, 21, 35, 0.6); border: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center;">
+          <span>2. Select ALL properties that characterize quantum entanglement [MSQ - 3.0 Marks]</span>
+          <span class="badge badge-success">AI Generated</span>
+        </div>
+        <div style="padding: 0.75rem 1rem; border-radius: var(--radius-sm); background: rgba(15, 21, 35, 0.6); border: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center;">
+          <span>3. Explain the concept of quantum superposition [Essay - 5.0 Marks]</span>
+          <span class="badge badge-primary">Faculty Authored</span>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="/assets/js/utils.js"></script>
+  <script src="/assets/js/api.js"></script>
+  <script src="/assets/js/auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      Auth.requireAuth(['educator', 'admin']);
+    });
+
+    function publishExam() {
+      showToast('Assessment published and scheduled successfully!', 'success');
+      setTimeout(() => {
+        window.location.href = '/educator/dashboard.html';
+      }, 700);
+    }
+  </script>
+</body>
+</html>

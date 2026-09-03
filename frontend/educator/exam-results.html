@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Assessment Submissions & Results — Educator Studio</title>
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="/index.html" class="brand">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--secondary);">
+          <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/>
+        </svg>
+        <span>AcademiQ</span>
+        <span class="badge badge-info" style="font-size: 0.65rem;">Studio</span>
+      </a>
+
+      <nav class="nav-menu">
+        <a href="/educator/dashboard.html" class="nav-link">Dashboard</a>
+        <a href="/educator/courses.html" class="nav-link">Courses</a>
+        <a href="/educator/question-bank.html" class="nav-link">Question Bank</a>
+        <a href="/educator/generate-questions.html" class="nav-link">AI Generator</a>
+        <a href="/educator/proctor-review.html" class="nav-link active">Results & Audits</a>
+      </nav>
+
+      <div id="navbar-auth-section"></div>
+    </div>
+  </header>
+
+  <main class="container" style="padding: 2.5rem 1.5rem;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+      <div>
+        <span class="badge badge-info" style="margin-bottom: 0.5rem;">Cohort Grading Analytics</span>
+        <h1>Submissions: Quantum Computing Midterm</h1>
+        <p style="margin-top: 0.25rem;">Inspect student scorecard evaluations, GenAI rubric ratings, and proctor trust scores.</p>
+      </div>
+    </div>
+
+    <!-- Results Table -->
+    <div class="card">
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Student</th>
+              <th>Submitted</th>
+              <th>GenAI Score</th>
+              <th>Status</th>
+              <th>Trust Score</th>
+              <th>Integrity Flag</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div style="font-weight: 600; color: #fff;">Alice Chen</div>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">alice@univ.edu</div>
+              </td>
+              <td>Today, 10:45 AM</td>
+              <td><span class="badge badge-success">46.5 / 50.0 (93%)</span></td>
+              <td><span class="badge badge-success">Passed</span></td>
+              <td><span style="color: var(--success); font-weight: 700;">99.0%</span></td>
+              <td><span class="badge badge-info">Clear</span></td>
+              <td><a href="/educator/proctor-review.html?attempt_id=demo-att-03" class="btn btn-outline btn-sm">Audit Details</a></td>
+            </tr>
+            <tr>
+              <td>
+                <div style="font-weight: 600; color: #fff;">David K.</div>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">david@univ.edu</div>
+              </td>
+              <td>Today, 09:30 AM</td>
+              <td><span class="badge badge-warning">28.0 / 50.0 (56%)</span></td>
+              <td><span class="badge badge-warning">Passed (Borderline)</span></td>
+              <td><span style="color: var(--danger); font-weight: 700;">42.0%</span></td>
+              <td><span class="badge badge-danger">Multiple Faces</span></td>
+              <td><a href="/educator/proctor-review.html?attempt_id=demo-att-01" class="btn btn-danger btn-sm">Audit Flag</a></td>
+            </tr>
+            <tr>
+              <td>
+                <div style="font-weight: 600; color: #fff;">Elena V.</div>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">elena@univ.edu</div>
+              </td>
+              <td>Yesterday, 16:15 PM</td>
+              <td><span class="badge badge-success">41.0 / 50.0 (82%)</span></td>
+              <td><span class="badge badge-success">Passed</span></td>
+              <td><span style="color: var(--warning); font-weight: 700;">58.0%</span></td>
+              <td><span class="badge badge-warning">Head Turned</span></td>
+              <td><a href="/educator/proctor-review.html?attempt_id=demo-att-02" class="btn btn-outline btn-sm">Audit Flag</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <script src="/assets/js/utils.js"></script>
+  <script src="/assets/js/api.js"></script>
+  <script src="/assets/js/auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      Auth.requireAuth(['educator', 'admin']);
+    });
+  </script>
+</body>
+</html>
