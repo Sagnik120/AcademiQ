@@ -4,7 +4,7 @@ import numpy as np
 import onnxruntime as ort
 from typing import Tuple
 
-MODEL_PATH = os.getenv("MODEL_PATH", os.path.join(os.path.dirname(__file__), "..", "model", "head_pose.onnx"))
+MODEL_PATH = os.getenv("MODEL_PATH", os.path.join(os.path.dirname(__file__), "..", "model", "best_head_pose.onnx"))
 
 # Load model globally to avoid reloading on every request
 session = None
