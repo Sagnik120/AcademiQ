@@ -18,9 +18,12 @@ __pycache__/
 *.pdb
 
 .env
+.env.*
+*.env
+**/.env
+**/.env.*
 
 venv/
-
 .venv/
 
 *.egg-info/
