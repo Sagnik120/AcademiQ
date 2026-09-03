@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Question Bank — Educator Studio</title>
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="/index.html" class="brand">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--secondary);">
+          <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/>
+        </svg>
+        <span>AcademiQ</span>
+        <span class="badge badge-info" style="font-size: 0.65rem;">Studio</span>
+      </a>
+
+      <nav class="nav-menu">
+        <a href="/educator/dashboard.html" class="nav-link">Dashboard</a>
+        <a href="/educator/courses.html" class="nav-link">Courses</a>
+        <a href="/educator/question-bank.html" class="nav-link active">Question Bank</a>
+        <a href="/educator/generate-questions.html" class="nav-link">AI Generator</a>
+        <a href="/educator/proctor-review.html" class="nav-link">Proctor Reviews</a>
+      </nav>
+
+      <div id="navbar-auth-section"></div>
+    </div>
+  </header>
+
+  <main class="container" style="padding: 2.5rem 1.5rem;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+      <div>
+        <span class="badge badge-info" style="margin-bottom: 0.5rem;">Assessment Repository</span>
+        <h1>Institutional Question Bank</h1>
+        <p style="margin-top: 0.25rem;">Curate, author, and inspect certified evaluation questions and AI proposals.</p>
+      </div>
+
+      <div style="display: flex; gap: 0.75rem;">
+        <button class="btn btn-outline btn-sm" onclick="openModal('new-question-modal')">+ Author Question</button>
+        <a href="/educator/generate-questions.html" class="btn btn-secondary btn-sm">⚡ AI Generator</a>
+      </div>
+    </div>
+
+    <!-- Question Cards List -->
+    <div style="display: flex; flex-direction: column; gap: 1rem;">
+      
+      <!-- Question 1 -->
+      <div class="card card-hover">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+          <div style="display: flex; align-items: center; gap: 0.65rem;">
+            <span class="badge badge-primary">MCQ</span>
+            <span class="badge badge-success">AI Generated</span>
+            <span style="font-size: 0.8rem; color: var(--text-muted);">Difficulty: Level 2</span>
+          </div>
+          <span style="font-weight: 700; color: #fff;">2.0 Marks</span>
+        </div>
+        <p style="font-size: 1rem; font-weight: 600; margin-bottom: 0.75rem;">
+          What mathematical entity represents a pure state in quantum mechanics?
+        </p>
+        <div style="font-size: 0.85rem; color: var(--text-secondary);">
+          Correct Answer: A ray (unit vector) in a complex Hilbert space
+        </div>
+      </div>
+
+      <!-- Question 2 -->
+      <div class="card card-hover">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+          <div style="display: flex; align-items: center; gap: 0.65rem;">
+            <span class="badge badge-info">MSQ</span>
+            <span class="badge badge-success">AI Generated</span>
+            <span style="font-size: 0.8rem; color: var(--text-muted);">Difficulty: Level 3</span>
+          </div>
+          <span style="font-weight: 700; color: #fff;">3.0 Marks</span>
+        </div>
+        <p style="font-size: 1rem; font-weight: 600; margin-bottom: 0.75rem;">
+          Select ALL properties that characterize quantum entanglement between two particles:
+        </p>
+        <div style="font-size: 0.85rem; color: var(--text-secondary);">
+          Correct: Non-factorable composite state, Bell's inequality violation, correlated measurement outcomes.
+        </div>
+      </div>
+
+      <!-- Question 3 -->
+      <div class="card card-hover">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+          <div style="display: flex; align-items: center; gap: 0.65rem;">
+            <span class="badge badge-secondary">Short Essay</span>
+            <span class="badge badge-primary">Faculty Authored</span>
+            <span style="font-size: 0.8rem; color: var(--text-muted);">Difficulty: Level 4</span>
+          </div>
+          <span style="font-weight: 700; color: #fff;">5.0 Marks</span>
+        </div>
+        <p style="font-size: 1rem; font-weight: 600; margin-bottom: 0.75rem;">
+          Explain the concept of quantum superposition. How does wave function collapse occur upon measurement according to the Copenhagen interpretation?
+        </p>
+        <div style="font-size: 0.85rem; color: var(--text-secondary);">
+          Grading Rubric: Accuracy (2.0), Completeness (2.0), Clarity (1.0).
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- New Question Modal -->
+  <div class="modal-backdrop" id="new-question-modal">
+    <div class="modal-dialog" style="max-width: 600px;">
+      <div style="padding: 2rem;">
+        <h3 style="margin-bottom: 1rem;">Author New Question</h3>
+        
+        <div class="form-group">
+          <label class="form-label">Question Text</label>
+          <textarea class="form-control" placeholder="Enter question formulation..." style="min-height: 80px;"></textarea>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div class="form-group">
+            <label class="form-label">Question Type</label>
+            <select class="form-control">
+              <option value="mcq">Single Choice (MCQ)</option>
+              <option value="msq">Multiple Choice (MSQ)</option>
+              <option value="text">Short Essay / Text</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Marks</label>
+            <input type="number" class="form-control" value="2.0" step="0.5">
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1rem;">
+          <button class="btn btn-outline" onclick="closeModal('new-question-modal')">Cancel</button>
+          <button class="btn btn-secondary" onclick="showToast('Question created in bank!', 'success'); closeModal('new-question-modal');">Save to Bank</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/assets/js/utils.js"></script>
+  <script src="/assets/js/api.js"></script>
+  <script src="/assets/js/auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      Auth.requireAuth(['educator', 'admin']);
+    });
+  </script>
+</body>
+</html>

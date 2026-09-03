@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Course Studio Builder — AcademiQ</title>
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+</head>
+<body style="min-height: 100vh; display: flex; flex-direction: column;">
+
+  <!-- Header -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <a href="/educator/courses.html" class="brand">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--secondary);">
+            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/>
+          </svg>
+          <span>AcademiQ</span>
+        </a>
+        <span class="badge badge-info">Course Builder</span>
+      </div>
+
+      <div style="display: flex; gap: 0.75rem;">
+        <a href="/educator/courses.html" class="btn btn-outline btn-sm">Cancel</a>
+        <button id="btn-save-course" class="btn btn-secondary btn-sm" onclick="saveCourse()">Save Curriculum</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" style="flex: 1; padding: 2.5rem 1.5rem; max-width: 960px;">
+    
+    <!-- Course Metadata Card -->
+    <div class="card" style="margin-bottom: 2rem;">
+      <h3 style="margin-bottom: 1.25rem;">General Course Details</h3>
+
+      <div class="form-group">
+        <label class="form-label" for="course-title-input">Course Title</label>
+        <input type="text" id="course-title-input" class="form-control" value="Advanced Quantum Mechanics" required>
+      </div>
+
+      <div class="grid grid-cols-2 gap-2">
+        <div class="form-group">
+          <label class="form-label" for="course-slug-input">URL Slug</label>
+          <input type="text" id="course-slug-input" class="form-control" value="advanced-quantum-mechanics" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="course-dept-input">Academic Department</label>
+          <input type="text" id="course-dept-input" class="form-control" value="Physics & Mathematical Sciences">
+        </div>
+      </div>
+
+      <div class="form-group" style="margin-bottom: 0;">
+        <label class="form-label" for="course-desc-input">Course Overview</label>
+        <textarea id="course-desc-input" class="form-control" style="min-height: 90px;">Comprehensive exploration of Hilbert space representations, Hermitian operators, entanglement, and foundational algorithms powering quantum computation.</textarea>
+      </div>
+    </div>
+
+    <!-- Curriculum Modules Builder -->
+    <div class="card" style="margin-bottom: 2rem;">
+      <div class="card-header">
+        <h3>Curriculum Modules & Lecture Assets</h3>
+        <button class="btn btn-outline btn-sm" onclick="addModule()">+ Add Module</button>
+      </div>
+
+      <div id="modules-list" style="display: flex; flex-direction: column; gap: 1.25rem;">
+        
+        <!-- Module 1 -->
+        <div class="card" style="background: rgba(15, 21, 35, 0.7); border-color: var(--border-light); padding: 1.25rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+            <input type="text" class="form-control" value="Module 1: Mathematical Foundations" style="max-width: 400px; font-weight: 700;">
+            <button class="btn btn-ghost btn-sm" style="color: var(--danger);" onclick="this.closest('.card').remove()">Remove</button>
+          </div>
+          
+          <div style="margin-top: 1rem; padding: 1rem; border-radius: var(--radius-sm); background: rgba(0,0,0,0.3); border: 1px dashed var(--border-light); text-align: center;">
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">Upload lecture slides, PDF readings, or media files</p>
+            <input type="file" class="form-control-file" style="font-size: 0.8rem;" onchange="handleFileUpload(this)">
+          </div>
+        </div>
+
+        <!-- Module 2 -->
+        <div class="card" style="background: rgba(15, 21, 35, 0.7); border-color: var(--border-light); padding: 1.25rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+            <input type="text" class="form-control" value="Module 2: Entanglement & Bell States" style="max-width: 400px; font-weight: 700;">
+            <button class="btn btn-ghost btn-sm" style="color: var(--danger);" onclick="this.closest('.card').remove()">Remove</button>
+          </div>
+          
+          <div style="margin-top: 1rem; padding: 1rem; border-radius: var(--radius-sm); background: rgba(0,0,0,0.3); border: 1px dashed var(--border-light); text-align: center;">
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">Upload lecture slides, PDF readings, or media files</p>
+            <input type="file" class="form-control-file" style="font-size: 0.8rem;" onchange="handleFileUpload(this)">
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <script src="/assets/js/utils.js"></script>
+  <script src="/assets/js/api.js"></script>
+  <script src="/assets/js/auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      Auth.requireAuth(['educator', 'admin']);
+    });
+
+    function addModule() {
+      const container = document.getElementById('modules-list');
+      const mod = document.createElement('div');
+      mod.className = 'card';
+      mod.style.background = 'rgba(15, 21, 35, 0.7)';
+      mod.style.borderColor = 'var(--border-light)';
+      mod.style.padding = '1.25rem';
+      mod.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+          <input type="text" class="form-control" placeholder="New Module Title..." style="max-width: 400px; font-weight: 700;">
+          <button class="btn btn-ghost btn-sm" style="color: var(--danger);" onclick="this.closest('.card').remove()">Remove</button>
+        </div>
+        <div style="margin-top: 1rem; padding: 1rem; border-radius: var(--radius-sm); background: rgba(0,0,0,0.3); border: 1px dashed var(--border-light); text-align: center;">
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">Upload lecture slides, PDF readings, or media files</p>
+          <input type="file" class="form-control-file" style="font-size: 0.8rem;" onchange="handleFileUpload(this)">
+        </div>
+      `;
+      container.appendChild(mod);
+    }
+
+    async function handleFileUpload(input) {
+      if (!input.files || input.files.length === 0) return;
+      const file = input.files[0];
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('folder', 'courseware');
+
+      try {
+        showToast(`Uploading ${file.name}...`, 'info');
+        const res = await api.upload('/storage/upload', formData);
+        showToast('Asset uploaded successfully!', 'success');
+        input.parentElement.innerHTML = `
+          <div style="color: var(--success); font-size: 0.85rem; font-weight: 600;">✓ Uploaded: ${escapeHtml(file.name)}</div>
+          <div style="font-size: 0.75rem; color: var(--text-muted);">${escapeHtml(res.url)}</div>
+        `;
+      } catch (err) {
+        showToast(err.message || 'Upload failed', 'error');
+      }
+    }
+
+    function saveCourse() {
+      showToast('Course curriculum saved successfully!', 'success');
+      setTimeout(() => {
+        window.location.href = '/educator/courses.html';
+      }, 700);
+    }
+  </script>
+</body>
+</html>

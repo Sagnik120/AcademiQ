@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Educator Studio Dashboard — AcademiQ</title>
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="/index.html" class="brand">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--secondary);">
+          <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/>
+        </svg>
+        <span>AcademiQ</span>
+        <span class="badge badge-info" style="font-size: 0.65rem;">Studio</span>
+      </a>
+
+      <nav class="nav-menu">
+        <a href="/educator/dashboard.html" class="nav-link active">Dashboard</a>
+        <a href="/educator/courses.html" class="nav-link">Courses</a>
+        <a href="/educator/question-bank.html" class="nav-link">Question Bank</a>
+        <a href="/educator/generate-questions.html" class="nav-link">AI Generator</a>
+        <a href="/educator/proctor-review.html" class="nav-link">Proctor Reviews</a>
+        <a href="/educator/live-sessions.html" class="nav-link">Live Rooms</a>
+      </nav>
+
+      <div id="navbar-auth-section"></div>
+    </div>
+  </header>
+
+  <main class="container" style="padding: 2.5rem 1.5rem;">
+    
+    <!-- Welcome Header & Quick Actions -->
+    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+      <div>
+        <span class="badge badge-info" style="margin-bottom: 0.5rem;">Faculty Management Suite</span>
+        <h1 id="educator-welcome-heading">Educator Studio</h1>
+        <p style="margin-top: 0.25rem;">Author curriculums, generate AI questions from syllabus PDFs, and review live proctored sessions.</p>
+      </div>
+
+      <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+        <a href="/educator/course-builder.html" class="btn btn-outline btn-sm">+ New Course</a>
+        <a href="/educator/exam-builder.html" class="btn btn-outline btn-sm">+ Author Exam</a>
+        <a href="/educator/generate-questions.html" class="btn btn-secondary btn-sm">⚡ AI Question Gen</a>
+      </div>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="grid grid-cols-4 gap-3" style="margin-bottom: 3rem;">
+      <div class="card card-hover">
+        <div style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700;">Total Students</div>
+        <div style="font-size: 2rem; font-weight: 800; font-family: var(--font-mono); color: var(--secondary); margin-top: 0.25rem;">142</div>
+        <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem;">Across all courses</div>
+      </div>
+
+      <div class="card card-hover">
+        <div style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700;">Authored Courses</div>
+        <div style="font-size: 2rem; font-weight: 800; font-family: var(--font-mono); color: var(--primary-light); margin-top: 0.25rem;">4</div>
+        <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem;">Active publishing</div>
+      </div>
+
+      <div class="card card-hover">
+        <div style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700;">Question Bank</div>
+        <div style="font-size: 2rem; font-weight: 800; font-family: var(--font-mono); color: var(--success); margin-top: 0.25rem;">86</div>
+        <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem;">34 AI-Generated</div>
+      </div>
+
+      <div class="card card-hover">
+        <div style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700;">Pending Proctor Audits</div>
+        <div style="font-size: 2rem; font-weight: 800; font-family: var(--font-mono); color: var(--warning); margin-top: 0.25rem;">2</div>
+        <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem;">Trust score &lt; 60%</div>
+      </div>
+    </div>
+
+    <!-- AI Ingestion Banner -->
+    <div class="card" style="margin-bottom: 3rem; background: linear-gradient(135deg, rgba(6, 182, 212, 0.12) 0%, rgba(15, 21, 35, 0.9) 100%); border-color: rgba(6, 182, 212, 0.35);">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem;">
+        <div>
+          <span class="badge badge-info" style="margin-bottom: 0.5rem;">Instant Syllabus Conversion</span>
+          <h3>Generate Exam Questions Directly from PDF Courseware</h3>
+          <p style="font-size: 0.9rem; margin-top: 0.25rem;">
+            Upload your lecture notes, textbook chapters, or syllabus slides. AcademiQ extracts concepts and builds candidate MCQs, MSQs, and rubrics.
+          </p>
+        </div>
+        <div>
+          <a href="/educator/generate-questions.html" class="btn btn-secondary btn-lg">Launch AI Generator →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Flagged Proctoring & Courses -->
+    <div class="grid grid-cols-2 gap-4">
+      
+      <!-- Flagged Proctor Audits -->
+      <div class="card">
+        <div class="card-header">
+          <h4>Integrity & Proctoring Audits</h4>
+          <a href="/educator/proctor-review.html" style="font-size: 0.85rem;">All Audits →</a>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Student</th>
+                  <th>Exam</th>
+                  <th>Trust</th>
+                  <th>Flag Reason</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <div style="font-weight: 600; color: #fff;">David K.</div>
+                    <div style="font-size: 0.75rem; color: var(--text-muted);">ID: 2026-081</div>
+                  </td>
+                  <td>Quantum Midterm</td>
+                  <td><span class="badge badge-danger">42.0%</span></td>
+                  <td style="color: var(--danger); font-size: 0.8rem;">Multiple faces detected</td>
+                  <td><a href="/educator/proctor-review.html?attempt_id=demo-att-01" class="btn btn-outline btn-sm">Inspect</a></td>
+                </tr>
+                <tr>
+                  <td>
+                    <div style="font-weight: 600; color: #fff;">Elena V.</div>
+                    <div style="font-size: 0.75rem; color: var(--text-muted);">ID: 2026-094</div>
+                  </td>
+                  <td>Quantum Midterm</td>
+                  <td><span class="badge badge-warning">58.0%</span></td>
+                  <td style="color: var(--warning); font-size: 0.8rem;">Frequent head turn away</td>
+                  <td><a href="/educator/proctor-review.html?attempt_id=demo-att-02" class="btn btn-outline btn-sm">Inspect</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Active Courses -->
+      <div class="card">
+        <div class="card-header">
+          <h4>Active Course Offerings</h4>
+          <a href="/educator/courses.html" style="font-size: 0.85rem;">Manage All →</a>
+        </div>
+        <div class="card-body" style="display: flex; flex-direction: column; gap: 1rem;">
+          <div style="padding: 1rem; border-radius: var(--radius-md); background: rgba(15, 21, 35, 0.6); border: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <div style="font-weight: 700; color: #fff;">Advanced Quantum Mechanics</div>
+              <div style="font-size: 0.8rem; color: var(--text-muted);">14 Lectures • 58 Enrolled Students</div>
+            </div>
+            <a href="/educator/course-builder.html?course_id=qc-101" class="btn btn-outline btn-sm">Edit Content</a>
+          </div>
+
+          <div style="padding: 1rem; border-radius: var(--radius-md); background: rgba(15, 21, 35, 0.6); border: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <div style="font-weight: 700; color: #fff;">Neural Architectures & Transformers</div>
+              <div style="font-size: 0.8rem; color: var(--text-muted);">18 Lectures • 84 Enrolled Students</div>
+            </div>
+            <a href="/educator/course-builder.html?course_id=ml-201" class="btn btn-outline btn-sm">Edit Content</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <script src="/assets/js/utils.js"></script>
+  <script src="/assets/js/api.js"></script>
+  <script src="/assets/js/auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const user = Auth.requireAuth(['educator', 'admin']);
+      if (user) {
+        document.getElementById('educator-welcome-heading').textContent = `Welcome, Professor ${user.last_name || ''}`;
+      }
+    });
+  </script>
+</body>
+</html>
