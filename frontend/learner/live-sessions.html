@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Live Classroom — AcademiQ</title>
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+</head>
+<body style="min-height: 100vh; display: flex; flex-direction: column;">
+
+  <!-- Header -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <a href="/learner/dashboard.html" class="brand">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--primary);">
+            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/>
+          </svg>
+          <span>AcademiQ</span>
+        </a>
+        <span class="badge badge-success">Live WebRTC Class</span>
+      </div>
+
+      <div style="display: flex; gap: 0.75rem;">
+        <a href="/learner/dashboard.html" class="btn btn-outline btn-sm">Leave Room</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" style="flex: 1; padding: 2rem 1.5rem; display: grid; grid-template-columns: 1fr 340px; gap: 2rem;">
+    
+    <!-- Left: Live Video Stage -->
+    <div>
+      <div class="card" style="padding: 0; overflow: hidden; background: #000; border-color: var(--border-light); position: relative;">
+        <div style="aspect-ratio: 16/9; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; background: radial-gradient(circle at center, #1e1b4b 0%, #0a0a0c 100%);">
+          <video id="remote-broadcast-video" autoplay playsinline style="width: 100%; height: 100%; object-fit: cover; display: none;"></video>
+          <div id="video-placeholder-ui" style="text-align: center;">
+            <div style="font-size: 3rem; margin-bottom: 0.5rem;">👨‍🏫</div>
+            <div style="font-size: 1.25rem; font-weight: 700; color: #fff;">Quantum Gate Synthesis Live Session</div>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem;">Instructor: Prof. Erwin Schrödinger • Connected via WebRTC</p>
+            <button class="btn btn-primary btn-sm" style="margin-top: 1.25rem;" onclick="joinLiveBroadcast()">Join Stream Audio/Video</button>
+          </div>
+        </div>
+
+        <!-- Controls Bar -->
+        <div style="padding: 0.75rem 1.25rem; background: rgba(15, 21, 35, 0.95); border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center;">
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: #10b981;"></span>
+            <span style="font-size: 0.85rem; color: var(--text-secondary);" id="peer-count-indicator">14 Participants Connected</span>
+          </div>
+          <div style="display: flex; gap: 0.5rem;">
+            <button class="btn btn-outline btn-sm" onclick="showToast('Hand raised! Instructor notified.', 'info')">✋ Raise Hand</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Classroom Chat Sidebar -->
+    <div>
+      <div class="card" style="height: 520px; display: flex; flex-direction: column; justify-content: space-between; padding: 1.25rem;">
+        <div>
+          <h4 style="margin-bottom: 0.75rem;">Classroom Discussion</h4>
+          <div id="chat-messages-container" style="height: 380px; overflow-y: auto; display: flex; flex-direction: column; gap: 0.65rem; padding-right: 0.25rem;">
+            
+            <div style="font-size: 0.85rem; padding: 0.5rem 0.75rem; border-radius: 6px; background: rgba(255, 255, 255, 0.03);">
+              <div style="font-weight: 700; color: var(--secondary); font-size: 0.75rem;">Prof. Schrödinger</div>
+              <div style="color: var(--text-primary); margin-top: 0.15rem;">Welcome everyone! Today we demonstrate Hadamard and CNOT gates.</div>
+            </div>
+
+            <div style="font-size: 0.85rem; padding: 0.5rem 0.75rem; border-radius: 6px; background: rgba(255, 255, 255, 0.03);">
+              <div style="font-weight: 700; color: var(--primary-light); font-size: 0.75rem;">Elena V.</div>
+              <div style="color: var(--text-primary); margin-top: 0.15rem;">Can a CNOT gate create entanglement if the target starts in |0⟩?</div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Chat Input Form -->
+        <form id="chat-form" style="display: flex; gap: 0.5rem; margin-top: 0.75rem;" onsubmit="sendChat(event)">
+          <input type="text" id="chat-input" class="form-control" placeholder="Ask a question..." style="font-size: 0.85rem;">
+          <button type="submit" class="btn btn-primary btn-sm">Send</button>
+        </form>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="/assets/js/utils.js"></script>
+  <script src="/assets/js/api.js"></script>
+  <script src="/assets/js/auth.js"></script>
+  <script src="/assets/js/webrtc.js"></script>
+  <script>
+    let rtcClient;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      Auth.requireAuth(['learner', 'admin']);
+    });
+
+    function joinLiveBroadcast() {
+      const user = Auth.getCurrentUser();
+      rtcClient = new WebRTCClient(
+        'room-qc-live-01',
+        user ? user.id : 'student-1',
+        false,
+        (peerId, stream) => {
+          const video = document.getElementById('remote-broadcast-video');
+          video.srcObject = stream;
+          video.style.display = 'block';
+          document.getElementById('video-placeholder-ui').style.display = 'none';
+        },
+        (event, data) => {
+          if (event === 'chat') {
+            appendChatMessage(data.sender_name, data.text);
+          }
+        }
+      );
+      rtcClient.initialize({ video: false, audio: true });
+      showToast('Connected to live classroom audio stream!', 'success');
+    }
+
+    function sendChat(e) {
+      e.preventDefault();
+      const input = document.getElementById('chat-input');
+      const text = input.value.trim();
+      if (!text) return;
+
+      const user = Auth.getCurrentUser();
+      const name = user ? `${user.first_name}` : 'Me';
+
+      appendChatMessage(name, text);
+      if (rtcClient) {
+        rtcClient.sendChatMessage(text, name);
+      }
+      input.value = '';
+    }
+
+    function appendChatMessage(sender, text) {
+      const container = document.getElementById('chat-messages-container');
+      const div = document.createElement('div');
+      div.style.fontSize = '0.85rem';
+      div.style.padding = '0.5rem 0.75rem';
+      div.style.borderRadius = '6px';
+      div.style.background = 'rgba(255, 255, 255, 0.03)';
+      div.innerHTML = `
+        <div style="font-weight: 700; color: var(--primary-light); font-size: 0.75rem;">${escapeHtml(sender)}</div>
+        <div style="color: var(--text-primary); margin-top: 0.15rem;">${escapeHtml(text)}</div>
+      `;
+      container.appendChild(div);
+      container.scrollTop = container.scrollHeight;
+    }
+  </script>
+</body>
+</html>

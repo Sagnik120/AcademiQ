@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Live WebRTC Classrooms — Educator Studio</title>
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="/index.html" class="brand">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--secondary);">
+          <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/>
+        </svg>
+        <span>AcademiQ</span>
+        <span class="badge badge-info" style="font-size: 0.65rem;">Studio</span>
+      </a>
+
+      <nav class="nav-menu">
+        <a href="/educator/dashboard.html" class="nav-link">Dashboard</a>
+        <a href="/educator/courses.html" class="nav-link">Courses</a>
+        <a href="/educator/question-bank.html" class="nav-link">Question Bank</a>
+        <a href="/educator/generate-questions.html" class="nav-link">AI Generator</a>
+        <a href="/educator/live-sessions.html" class="nav-link active">Live Rooms</a>
+      </nav>
+
+      <div id="navbar-auth-section"></div>
+    </div>
+  </header>
+
+  <main class="container" style="padding: 2.5rem 1.5rem;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+      <div>
+        <span class="badge badge-secondary" style="margin-bottom: 0.5rem;">Real-Time Peer Signaling</span>
+        <h1>Live WebRTC Classrooms</h1>
+        <p style="margin-top: 0.25rem;">Host interactive lecture streams, peer-to-peer discussions, and office hours.</p>
+      </div>
+
+      <button class="btn btn-secondary btn-sm" onclick="openModal('schedule-room-modal')">+ Launch Live Room</button>
+    </div>
+
+    <!-- Active Rooms Grid -->
+    <div class="grid grid-cols-2 gap-4" id="live-rooms-grid">
+      
+      <!-- Room 1 -->
+      <div class="card card-hover" style="border-color: rgba(6, 182, 212, 0.4);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+          <span class="badge badge-success">● BROADCASTING LIVE</span>
+          <span style="font-size: 0.8rem; color: var(--text-muted);">Room: #room-qc-live-01</span>
+        </div>
+        <h3>Quantum Gate Synthesis Office Hours</h3>
+        <p style="font-size: 0.875rem; margin-top: 0.5rem;">
+          Interactive walkthrough of reversible unitary circuits and Deutsch-Jozsa algorithms with students.
+        </p>
+
+        <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-size: 0.85rem; color: var(--text-secondary);">14 Peers Connected</span>
+          <button class="btn btn-primary btn-sm" onclick="showToast('Connected to signaling server on room #room-qc-live-01', 'success')">Join Stage →</button>
+        </div>
+      </div>
+
+      <!-- Room 2 -->
+      <div class="card card-hover">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+          <span class="badge badge-info">Scheduled</span>
+          <span style="font-size: 0.8rem; color: var(--text-muted);">Tomorrow, 14:00 EST</span>
+        </div>
+        <h3>Transformers & Multi-Head Attention Q&A</h3>
+        <p style="font-size: 0.875rem; margin-top: 0.5rem;">
+          Lecture review session discussing positional encodings and scaling dot-product attention.
+        </p>
+
+        <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-size: 0.85rem; color: var(--text-secondary);">Course: ml-201</span>
+          <button class="btn btn-outline btn-sm">Manage Room</button>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Schedule Room Modal -->
+  <div class="modal-backdrop" id="schedule-room-modal">
+    <div class="modal-dialog">
+      <div style="padding: 2rem;">
+        <h3 style="margin-bottom: 1rem;">Launch Live Classroom</h3>
+        
+        <div class="form-group">
+          <label class="form-label">Room Topic / Session Title</label>
+          <input type="text" id="room-topic-input" class="form-control" placeholder="e.g. Midterm Problem Solving Session">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Associated Course</label>
+          <select class="form-control">
+            <option>Advanced Quantum Mechanics (qc-101)</option>
+            <option>Neural Architectures & Transformers (ml-201)</option>
+          </select>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1.5rem;">
+          <button class="btn btn-outline" onclick="closeModal('schedule-room-modal')">Cancel</button>
+          <button class="btn btn-secondary" onclick="createRoom()">Start Stream</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/assets/js/utils.js"></script>
+  <script src="/assets/js/api.js"></script>
+  <script src="/assets/js/auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      Auth.requireAuth(['educator', 'admin']);
+    });
+
+    async function createRoom() {
+      const topic = document.getElementById('room-topic-input').value.trim() || 'Live Class Session';
+      closeModal('schedule-room-modal');
+      showToast(`Signaling room created: "${topic}"!`, 'success');
+    }
+  </script>
+</body>
+</html>

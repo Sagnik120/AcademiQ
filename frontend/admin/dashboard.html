@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>System Administration — AcademiQ</title>
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="/index.html" class="brand">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--accent-purple);">
+          <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+        </svg>
+        <span>AcademiQ</span>
+        <span class="badge badge-primary" style="font-size: 0.65rem;">Platform Admin</span>
+      </a>
+
+      <nav class="nav-menu">
+        <a href="/admin/dashboard.html" class="nav-link active">Overview</a>
+        <a href="/admin/users.html" class="nav-link">Users Directory</a>
+      </nav>
+
+      <div id="navbar-auth-section"></div>
+    </div>
+  </header>
+
+  <main class="container" style="padding: 2.5rem 1.5rem;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+      <div>
+        <span class="badge badge-primary" style="margin-bottom: 0.5rem;">Platform Operations & Telemetry</span>
+        <h1>Platform System Overview</h1>
+        <p style="margin-top: 0.25rem;">Real-time infrastructure health, platform statistics, and administrative audit logs.</p>
+      </div>
+
+      <a href="/admin/users.html" class="btn btn-outline btn-sm">Manage Users →</a>
+    </div>
+
+    <!-- Platform Stats Grid -->
+    <div class="grid grid-cols-4 gap-3" style="margin-bottom: 3rem;">
+      <div class="card card-hover">
+        <div style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700;">Total Users</div>
+        <div id="stat-total-users" style="font-size: 2rem; font-weight: 800; font-family: var(--font-mono); color: var(--primary-light); margin-top: 0.25rem;">248</div>
+        <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem;">Learners & Faculty</div>
+      </div>
+
+      <div class="card card-hover">
+        <div style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700;">Published Courses</div>
+        <div id="stat-total-courses" style="font-size: 2rem; font-weight: 800; font-family: var(--font-mono); color: var(--secondary); margin-top: 0.25rem;">12</div>
+        <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem;">Active curriculums</div>
+      </div>
+
+      <div class="card card-hover">
+        <div style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700;">Completed Attempts</div>
+        <div id="stat-total-attempts" style="font-size: 2rem; font-weight: 800; font-family: var(--font-mono); color: var(--success); margin-top: 0.25rem;">89</div>
+        <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem;">AI Scored</div>
+      </div>
+
+      <div class="card card-hover">
+        <div style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700;">Flagged Attempts</div>
+        <div id="stat-total-flagged" style="font-size: 2rem; font-weight: 800; font-family: var(--font-mono); color: var(--warning); margin-top: 0.25rem;">4</div>
+        <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem;">Trust score &lt; 60%</div>
+      </div>
+    </div>
+
+    <!-- Microservices Health Status -->
+    <div class="card" style="margin-bottom: 3rem;">
+      <h3 style="margin-bottom: 1.25rem;">Cluster Microservices Health</h3>
+      <div class="grid grid-cols-4 gap-3">
+        <div style="padding: 1rem; border-radius: var(--radius-sm); background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3);">
+          <div style="font-size: 0.75rem; color: var(--text-muted);">API GATEWAY</div>
+          <div style="font-weight: 700; color: #34d399; margin-top: 0.25rem;">backend-main :8000</div>
+          <div style="font-size: 0.75rem; color: var(--success); margin-top: 0.25rem;">● Online (24ms)</div>
+        </div>
+
+        <div style="padding: 1rem; border-radius: var(--radius-sm); background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3);">
+          <div style="font-size: 0.75rem; color: var(--text-muted);">VISION PROCTORING</div>
+          <div style="font-weight: 700; color: #34d399; margin-top: 0.25rem;">ml-service :8001</div>
+          <div style="font-size: 0.75rem; color: var(--success); margin-top: 0.25rem;">● ONNX Engine Ready</div>
+        </div>
+
+        <div style="padding: 1rem; border-radius: var(--radius-sm); background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3);">
+          <div style="font-size: 0.75rem; color: var(--text-muted);">EVALUATION ENGINE</div>
+          <div style="font-weight: 700; color: #34d399; margin-top: 0.25rem;">genai-service :8002</div>
+          <div style="font-size: 0.75rem; color: var(--success); margin-top: 0.25rem;">● LLM Pipeline Active</div>
+        </div>
+
+        <div style="padding: 1rem; border-radius: var(--radius-sm); background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3);">
+          <div style="font-size: 0.75rem; color: var(--text-muted);">STATE STORE</div>
+          <div style="font-weight: 700; color: #34d399; margin-top: 0.25rem;">postgres + redis</div>
+          <div style="font-size: 0.75rem; color: var(--success); margin-top: 0.25rem;">● Healthy</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Security Audit Logs -->
+    <div class="card">
+      <div class="card-header">
+        <h4>Recent Administrative Audit Trail</h4>
+        <span style="font-size: 0.8rem; color: var(--text-muted);">Real-time Security Ingestion</span>
+      </div>
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Action</th>
+              <th>Resource</th>
+              <th>IP Address</th>
+              <th>Timestamp</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="audit-logs-tbody">
+            <tr>
+              <td><code>update_user_status</code></td>
+              <td>User: david@univ.edu</td>
+              <td>192.168.1.50</td>
+              <td>Just now</td>
+              <td><span class="badge badge-success">Logged</span></td>
+            </tr>
+            <tr>
+              <td><code>course_published</code></td>
+              <td>Course: Advanced Quantum Mechanics</td>
+              <td>10.0.4.12</td>
+              <td>12 mins ago</td>
+              <td><span class="badge badge-success">Logged</span></td>
+            </tr>
+            <tr>
+              <td><code>attempt_flagged</code></td>
+              <td>Attempt: #demo-att-01</td>
+              <td>172.16.0.8</td>
+              <td>45 mins ago</td>
+              <td><span class="badge badge-warning">Flagged</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="/assets/js/utils.js"></script>
+  <script src="/assets/js/api.js"></script>
+  <script src="/assets/js/auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      Auth.requireAuth(['admin']);
+
+      try {
+        const stats = await api.get('/admin/stats');
+        if (stats) {
+          document.getElementById('stat-total-users').textContent = stats.total_users;
+          document.getElementById('stat-total-courses').textContent = stats.total_courses;
+          document.getElementById('stat-total-attempts').textContent = stats.total_exam_attempts;
+          document.getElementById('stat-total-flagged').textContent = stats.flagged_proctor_sessions;
+        }
+      } catch (e) {
+        console.warn('API stats fetch bypassed, showing cached telemetry');
+      }
+    });
+  </script>
+</body>
+</html>
