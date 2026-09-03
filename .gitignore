@@ -46,7 +46,15 @@ ml-service/training/weights/*.pt
 
 # Keep ONNX (needed for deployment, under 15MB)
 
-!ml-service/app/model/head_pose.onnx
+!ml-service/app/model/best_head_pose.onnx*
+!ml-service/app/model/head_pose.onnx*
+
+# Ignore docs everywhere per project requirement
+docs/
+**/docs/
+**/instructions/
+**/instruction/
+ml-service/AcademiQ_ML/
 
 # Logs
 
