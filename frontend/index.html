@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AcademiQ — Next-Gen AI Examination & Proctoring Platform</title>
+  <meta name="description" content="AcademiQ is an advanced educational platform delivering automated GenAI essay grading, real-time ML biometric proctoring, and interactive WebRTC classrooms.">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="/index.html" class="brand" id="nav-brand-logo">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--primary);">
+          <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/>
+          <path d="M6 6h10"/>
+          <path d="M6 10h10"/>
+        </svg>
+        <span>AcademiQ</span>
+        <span class="brand-badge">AI 2.0</span>
+      </a>
+
+      <nav class="nav-menu">
+        <a href="#features" class="nav-link">Features</a>
+        <a href="#proctoring" class="nav-link">AI Proctoring</a>
+        <a href="#grading" class="nav-link">Auto-Grading</a>
+      </nav>
+
+      <div id="navbar-auth-section">
+        <!-- Injected dynamically via auth.js -->
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <a href="/auth/learner-login.html" class="btn btn-ghost btn-sm" id="btn-login-header">Sign In</a>
+          <a href="/auth/learner-signup.html" class="btn btn-primary btn-sm" id="btn-signup-header">Get Started</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="container" style="padding: 5rem 1.5rem; text-align: center; position: relative;">
+    <div style="max-width: 860px; margin: 0 auto;">
+      <span class="badge badge-primary" style="margin-bottom: 1.5rem; padding: 0.4rem 1rem;">
+        ⚡ Built for High-Stakes Assessments & Universities
+      </span>
+      <h1 style="margin-bottom: 1.5rem;">
+        Intelligent Examination, <br>
+        <span class="gradient-text">Zero Compromise on Integrity</span>
+      </h1>
+      <p style="font-size: 1.25rem; line-height: 1.7; margin-bottom: 2.5rem; color: var(--text-secondary);">
+        Empower learners and educators with real-time biometric vision proctoring, automated multi-criterion essay grading with citations, and instant question generation.
+      </p>
+      
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="/auth/learner-signup.html" class="btn btn-primary btn-lg" id="btn-hero-learner">
+          <span>Start as Learner</span>
+          <span>→</span>
+        </a>
+        <a href="/auth/educator-login.html" class="btn btn-outline btn-lg" id="btn-hero-educator">
+          <span>Educator Studio</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Core Highlights / Metrics -->
+  <section class="container" style="margin-bottom: 4rem;">
+    <div class="grid grid-cols-4 gap-3">
+      <div class="card card-hover" style="text-align: center;">
+        <div style="font-size: 2.5rem; font-weight: 800; font-family: var(--font-mono); color: var(--primary-light);">100%</div>
+        <div style="font-size: 0.95rem; font-weight: 600; color: var(--text-primary); margin-top: 0.25rem;">Automated Grading</div>
+        <p style="font-size: 0.85rem; margin-top: 0.25rem;">Multi-rubric LLM evaluation with citation highlights</p>
+      </div>
+
+      <div class="card card-hover" style="text-align: center;">
+        <div style="font-size: 2.5rem; font-weight: 800; font-family: var(--font-mono); color: var(--secondary);">30 FPS</div>
+        <div style="font-size: 0.95rem; font-weight: 600; color: var(--text-primary); margin-top: 0.25rem;">Vision Proctoring</div>
+        <p style="font-size: 0.85rem; margin-top: 0.25rem;">Head pose, gaze angle, and multi-face detection</p>
+      </div>
+
+      <div class="card card-hover" style="text-align: center;">
+        <div style="font-size: 2.5rem; font-weight: 800; font-family: var(--font-mono); color: var(--success);">Live</div>
+        <div style="font-size: 0.95rem; font-weight: 600; color: var(--text-primary); margin-top: 0.25rem;">WebRTC Sessions</div>
+        <p style="font-size: 0.85rem; margin-top: 0.25rem;">Real-time classrooms & interactive peer signaling</p>
+      </div>
+
+      <div class="card card-hover" style="text-align: center;">
+        <div style="font-size: 2.5rem; font-weight: 800; font-family: var(--font-mono); color: var(--accent-purple);">1-Click</div>
+        <div style="font-size: 0.95rem; font-weight: 600; color: var(--text-primary); margin-top: 0.25rem;">Syllabus AI Gen</div>
+        <p style="font-size: 0.85rem; margin-top: 0.25rem;">Converts PDF course materials into exam banks</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Detailed Feature Showcase -->
+  <section id="features" class="container" style="padding: 4rem 1.5rem;">
+    <div style="text-align: center; margin-bottom: 3rem;">
+      <span class="badge badge-info" style="margin-bottom: 0.75rem;">Deep Tech Capabilities</span>
+      <h2>Engineered for Excellence</h2>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4">
+      <div class="card" style="padding: 2.25rem;">
+        <div class="badge badge-primary" style="margin-bottom: 1rem;">Computer Vision</div>
+        <h3 style="margin-bottom: 0.75rem;">Real-Time AI Proctoring</h3>
+        <p style="margin-bottom: 1.5rem; font-size: 0.95rem;">
+          Continuous frame-by-frame head pose estimation, gaze tracking, and multiple person detection. Trust scores update dynamically via low-latency WebSockets.
+        </p>
+        <div style="background: rgba(0,0,0,0.4); border-radius: var(--radius-md); padding: 1rem; border: 1px solid var(--border-subtle);">
+          <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 0.5rem;">
+            <span>Live Candidate Trust Score</span>
+            <span style="color: var(--success); font-weight: 700;">96 / 100</span>
+          </div>
+          <div style="height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;">
+            <div style="width: 96%; height: 100%; background: linear-gradient(90deg, #10b981, #06b6d4);"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="padding: 2.25rem;">
+        <div class="badge badge-success" style="margin-bottom: 1rem;">Generative AI</div>
+        <h3 style="margin-bottom: 0.75rem;">Explainable Essay Grading</h3>
+        <p style="margin-bottom: 1.5rem; font-size: 0.95rem;">
+          AcademiQ doesn't just return a number; it provides detailed rubric breakdowns (Accuracy, Completeness, Clarity) and interactive citation highlights pointing out key arguments.
+        </p>
+        <div style="background: rgba(0,0,0,0.4); border-radius: var(--radius-md); padding: 1rem; border: 1px solid var(--border-subtle); font-size: 0.85rem;">
+          <div style="margin-bottom: 0.4rem;">
+            <span style="color: #34d399; background: rgba(16,185,129,0.15); padding: 2px 6px; border-radius: 4px;">Earned Marks:</span> "Accurately detailed superposition and entanglement..."
+          </div>
+          <div>
+            <span style="color: #f87171; background: rgba(239,68,68,0.15); padding: 2px 6px; border-radius: 4px;">Missed Scope:</span> "Omitted decoherence mechanisms..."
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer style="border-top: 1px solid var(--border-subtle); padding: 3rem 0; margin-top: 5rem; text-align: center;">
+    <div class="container">
+      <div style="font-weight: 700; font-size: 1.15rem; margin-bottom: 0.5rem; color: var(--text-primary);">AcademiQ</div>
+      <p style="font-size: 0.85rem; color: var(--text-muted);">
+        &copy; 2026 AcademiQ Technologies. All rights reserved. Precision Examination & Proctoring.
+      </p>
+    </div>
+  </footer>
+
+  <script src="/assets/js/utils.js"></script>
+  <script src="/assets/js/api.js"></script>
+  <script src="/assets/js/auth.js"></script>
+</body>
+</html>

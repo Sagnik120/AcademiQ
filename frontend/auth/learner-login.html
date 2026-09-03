@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Learner Sign In — AcademiQ</title>
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+</head>
+<body style="display: flex; flex-direction: column; min-height: 100vh;">
+
+  <!-- Simple Header -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="/index.html" class="brand" id="auth-logo">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--primary);">
+          <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/>
+        </svg>
+        <span>AcademiQ</span>
+      </a>
+      <div>
+        <span style="font-size: 0.9rem; color: var(--text-secondary);">Educator? </span>
+        <a href="/auth/educator-login.html" class="btn btn-ghost btn-sm">Sign in here</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Login Card -->
+  <main class="container" style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 3rem 1.5rem;">
+    <div class="card" style="width: 100%; max-width: 440px; padding: 2.5rem 2rem;">
+      <div style="text-align: center; margin-bottom: 2rem;">
+        <span class="badge badge-primary" style="margin-bottom: 0.5rem;">Learner Portal</span>
+        <h2>Welcome Back</h2>
+        <p style="font-size: 0.9rem; margin-top: 0.25rem;">Sign in to access your exams and courses</p>
+      </div>
+
+      <form id="learner-login-form">
+        <div class="form-group">
+          <label class="form-label" for="login-email">Email Address</label>
+          <input type="email" id="login-email" class="form-control" placeholder="name@example.com" required autocomplete="email">
+        </div>
+
+        <div class="form-group">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <label class="form-label" for="login-password">Password</label>
+          </div>
+          <input type="password" id="login-password" class="form-control" placeholder="••••••••" required autocomplete="current-password">
+        </div>
+
+        <button type="submit" id="btn-submit-login" class="btn btn-primary btn-full" style="margin-top: 0.75rem;">
+          <span>Sign In</span>
+        </button>
+      </form>
+
+      <div style="text-align: center; margin-top: 1.5rem; font-size: 0.875rem; color: var(--text-secondary);">
+        Don't have an account? <a href="/auth/learner-signup.html" style="font-weight: 600;">Create one</a>
+      </div>
+    </div>
+  </main>
+
+  <script src="/assets/js/utils.js"></script>
+  <script src="/assets/js/api.js"></script>
+  <script src="/assets/js/auth.js"></script>
+  <script>
+    document.getElementById('learner-login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('btn-submit-login');
+      const email = document.getElementById('login-email').value.trim();
+      const password = document.getElementById('login-password').value;
+
+      try {
+        btn.disabled = true;
+        btn.innerHTML = '<span>Signing in...</span>';
+
+        const user = await Auth.login(email, password);
+        showToast(`Welcome back, ${user.first_name}!`, 'success');
+
+        setTimeout(() => {
+          window.location.href = user.role === 'educator' ? '/educator/dashboard.html' : '/learner/dashboard.html';
+        }, 600);
+      } catch (err) {
+        showToast(err.message || 'Login failed', 'error');
+        btn.disabled = false;
+        btn.innerHTML = '<span>Sign In</span>';
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Learner Registration — AcademiQ</title>
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+</head>
+<body style="display: flex; flex-direction: column; min-height: 100vh;">
+
+  <!-- Simple Header -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="/index.html" class="brand" id="auth-logo">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--primary);">
+          <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/>
+        </svg>
+        <span>AcademiQ</span>
+      </a>
+      <div>
+        <span style="font-size: 0.9rem; color: var(--text-secondary);">Educator? </span>
+        <a href="/auth/educator-signup.html" class="btn btn-ghost btn-sm">Join as Instructor</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Signup Card -->
+  <main class="container" style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 3rem 1.5rem;">
+    <div class="card" style="width: 100%; max-width: 480px; padding: 2.5rem 2rem;">
+      <div style="text-align: center; margin-bottom: 2rem;">
+        <span class="badge badge-primary" style="margin-bottom: 0.5rem;">Learner Portal</span>
+        <h2>Create Your Account</h2>
+        <p style="font-size: 0.9rem; margin-top: 0.25rem;">Join AcademiQ to enroll in courses & sit assessments</p>
+      </div>
+
+      <form id="learner-signup-form">
+        <div class="grid grid-cols-2 gap-2" style="margin-bottom: 0;">
+          <div class="form-group">
+            <label class="form-label" for="signup-first-name">First Name</label>
+            <input type="text" id="signup-first-name" class="form-control" placeholder="John" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="signup-last-name">Last Name</label>
+            <input type="text" id="signup-last-name" class="form-control" placeholder="Doe" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="signup-email">Email Address</label>
+          <input type="email" id="signup-email" class="form-control" placeholder="john.doe@example.com" required autocomplete="email">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="signup-password">Password</label>
+          <input type="password" id="signup-password" class="form-control" placeholder="At least 8 characters" required minlength="8" autocomplete="new-password">
+        </div>
+
+        <button type="submit" id="btn-submit-signup" class="btn btn-primary btn-full" style="margin-top: 0.75rem;">
+          <span>Create Account</span>
+        </button>
+      </form>
+
+      <div style="text-align: center; margin-top: 1.5rem; font-size: 0.875rem; color: var(--text-secondary);">
+        Already have an account? <a href="/auth/learner-login.html" style="font-weight: 600;">Sign in</a>
+      </div>
+    </div>
+  </main>
+
+  <script src="/assets/js/utils.js"></script>
+  <script src="/assets/js/api.js"></script>
+  <script src="/assets/js/auth.js"></script>
+  <script>
+    document.getElementById('learner-signup-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('btn-submit-signup');
+      const firstName = document.getElementById('signup-first-name').value.trim();
+      const lastName = document.getElementById('signup-last-name').value.trim();
+      const email = document.getElementById('signup-email').value.trim();
+      const password = document.getElementById('signup-password').value;
+
+      try {
+        btn.disabled = true;
+        btn.innerHTML = '<span>Creating account...</span>';
+
+        await Auth.register({
+          first_name: firstName,
+          last_name: lastName,
+          email: email,
+          password: password,
+          role: 'learner'
+        });
+
+        showToast('Account created successfully!', 'success');
+
+        setTimeout(() => {
+          window.location.href = '/learner/dashboard.html';
+        }, 600);
+      } catch (err) {
+        showToast(err.message || 'Registration failed', 'error');
+        btn.disabled = false;
+        btn.innerHTML = '<span>Create Account</span>';
+      }
+    });
+  </script>
+</body>
+</html>

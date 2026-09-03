@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Educator Studio Sign In — AcademiQ</title>
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+</head>
+<body style="display: flex; flex-direction: column; min-height: 100vh;">
+
+  <!-- Simple Header -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="/index.html" class="brand" id="auth-logo">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--secondary);">
+          <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/>
+        </svg>
+        <span>AcademiQ</span>
+        <span class="badge badge-info" style="font-size: 0.65rem;">Studio</span>
+      </a>
+      <div>
+        <span style="font-size: 0.9rem; color: var(--text-secondary);">Learner? </span>
+        <a href="/auth/learner-login.html" class="btn btn-ghost btn-sm">Learner Portal</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Login Card -->
+  <main class="container" style="flex: 1; display: flex; align-items: center; justify-content: center; padding: 3rem 1.5rem;">
+    <div class="card" style="width: 100%; max-width: 440px; padding: 2.5rem 2rem;">
+      <div style="text-align: center; margin-bottom: 2rem;">
+        <span class="badge badge-info" style="margin-bottom: 0.5rem;">Educator Studio</span>
+        <h2>Instructor Access</h2>
+        <p style="font-size: 0.9rem; margin-top: 0.25rem;">Manage courses, author exams, and review proctoring</p>
+      </div>
+
+      <form id="educator-login-form">
+        <div class="form-group">
+          <label class="form-label" for="login-email">Educator Email</label>
+          <input type="email" id="login-email" class="form-control" placeholder="professor@university.edu" required autocomplete="email">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="login-password">Password</label>
+          <input type="password" id="login-password" class="form-control" placeholder="••••••••" required autocomplete="current-password">
+        </div>
+
+        <button type="submit" id="btn-submit-educator-login" class="btn btn-secondary btn-full" style="margin-top: 0.75rem;">
+          <span>Enter Educator Studio</span>
+        </button>
+      </form>
+
+      <div style="text-align: center; margin-top: 1.5rem; font-size: 0.875rem; color: var(--text-secondary);">
+        New faculty or instructor? <a href="/auth/educator-signup.html" style="font-weight: 600; color: var(--secondary);">Register studio account</a>
+      </div>
+    </div>
+  </main>
+
+  <script src="/assets/js/utils.js"></script>
+  <script src="/assets/js/api.js"></script>
+  <script src="/assets/js/auth.js"></script>
+  <script>
+    document.getElementById('educator-login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('btn-submit-educator-login');
+      const email = document.getElementById('login-email').value.trim();
+      const password = document.getElementById('login-password').value;
+
+      try {
+        btn.disabled = true;
+        btn.innerHTML = '<span>Verifying credentials...</span>';
+
+        const user = await Auth.login(email, password);
+        showToast(`Welcome Professor ${user.last_name}!`, 'success');
+
+        setTimeout(() => {
+          window.location.href = user.role === 'admin' ? '/admin/dashboard.html' : '/educator/dashboard.html';
+        }, 600);
+      } catch (err) {
+        showToast(err.message || 'Login failed', 'error');
+        btn.disabled = false;
+        btn.innerHTML = '<span>Enter Educator Studio</span>';
+      }
+    });
+  </script>
+</body>
+</html>
