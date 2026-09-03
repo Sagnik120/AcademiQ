@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Course Details — AcademiQ</title>
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="/index.html" class="brand">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--primary);">
+          <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/>
+        </svg>
+        <span>AcademiQ</span>
+        <span class="badge badge-primary" style="font-size: 0.65rem;">Course</span>
+      </a>
+
+      <nav class="nav-menu">
+        <a href="/learner/dashboard.html" class="nav-link">Dashboard</a>
+        <a href="/learner/courses.html" class="nav-link active">Catalog</a>
+      </nav>
+
+      <div id="navbar-auth-section"></div>
+    </div>
+  </header>
+
+  <main class="container" style="padding: 3rem 1.5rem;">
+    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem;">
+      
+      <!-- Left: Course Overview & Modules -->
+      <div>
+        <span class="badge badge-primary" style="margin-bottom: 0.75rem;">Undergraduate & Masters Level</span>
+        <h1 id="course-title" style="margin-bottom: 1rem;">Advanced Quantum Mechanics</h1>
+        <p id="course-description" style="font-size: 1.1rem; line-height: 1.7; margin-bottom: 2rem;">
+          Explore the mathematical formalism of quantum theory, state vectors, Hermitian operators, entanglement, and the foundational algorithms powering quantum computation.
+        </p>
+
+        <!-- Curriculum Modules -->
+        <h3 style="margin-bottom: 1.25rem;">Course Curriculum</h3>
+        <div style="display: flex; flex-direction: column; gap: 1rem;">
+          
+          <div class="card" style="padding: 1.25rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+              <h4 style="font-size: 1.05rem;">Module 1: Mathematical Foundations</h4>
+              <span style="font-size: 0.8rem; color: var(--text-muted);">3 Lectures • 45 Mins</span>
+            </div>
+            <p style="font-size: 0.875rem;">Hilbert spaces, Dirac bra-ket notation, and inner product spaces.</p>
+          </div>
+
+          <div class="card" style="padding: 1.25rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+              <h4 style="font-size: 1.05rem;">Module 2: Entanglement & Bell States</h4>
+              <span style="font-size: 0.8rem; color: var(--text-muted);">4 Lectures • 60 Mins</span>
+            </div>
+            <p style="font-size: 0.875rem;">Quantum correlations, EPR paradox, Bell inequality violations, and quantum teleportation.</p>
+          </div>
+
+          <div class="card" style="padding: 1.25rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+              <h4 style="font-size: 1.05rem;">Module 3: Quantum Circuit Models</h4>
+              <span style="font-size: 0.8rem; color: var(--text-muted);">5 Lectures • 75 Mins</span>
+            </div>
+            <p style="font-size: 0.875rem;">Hadamard gates, Phase gates, CNOT, and Deutsch-Jozsa algorithm implementation.</p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Right: Action Sidebar -->
+      <div>
+        <div class="card" style="position: sticky; top: 90px;">
+          <div style="font-size: 1.5rem; font-weight: 800; margin-bottom: 1rem; color: var(--text-primary);">
+            Free Enrollment
+          </div>
+          
+          <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.5rem; font-size: 0.875rem;">
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: var(--text-muted);">Instructor:</span>
+              <span style="font-weight: 600;">Prof. E. Schrödinger</span>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: var(--text-muted);">Assessments:</span>
+              <span style="font-weight: 600;">2 Proctored Exams</span>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: var(--text-muted);">Evaluation:</span>
+              <span style="font-weight: 600; color: var(--secondary);">AI Rubrics & Citations</span>
+            </div>
+          </div>
+
+          <a href="/learner/course-content.html?course_id=qc-101" class="btn btn-primary btn-full btn-lg" id="btn-enroll-course">
+            <span>Enter Curriculum</span>
+            <span>→</span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <script src="/assets/js/utils.js"></script>
+  <script src="/assets/js/api.js"></script>
+  <script src="/assets/js/auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      Auth.requireAuth(['learner', 'admin']);
+    });
+  </script>
+</body>
+</html>

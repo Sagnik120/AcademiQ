@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Assessments & Exams — AcademiQ</title>
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="/index.html" class="brand">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--primary);">
+          <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/>
+        </svg>
+        <span>AcademiQ</span>
+        <span class="badge badge-primary" style="font-size: 0.65rem;">Exams</span>
+      </a>
+
+      <nav class="nav-menu">
+        <a href="/learner/dashboard.html" class="nav-link">Dashboard</a>
+        <a href="/learner/courses.html" class="nav-link">Courses</a>
+        <a href="/learner/exams.html" class="nav-link active">Exams</a>
+      </nav>
+
+      <div id="navbar-auth-section"></div>
+    </div>
+  </header>
+
+  <main class="container" style="padding: 2.5rem 1.5rem;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+      <div>
+        <span class="badge badge-primary" style="margin-bottom: 0.5rem;">Testing Center</span>
+        <h1>Scheduled & Available Exams</h1>
+        <p style="margin-top: 0.25rem;">Sit your proctored assessments, review exam guidelines, and view past performance.</p>
+      </div>
+    </div>
+
+    <!-- Active Assessments Grid -->
+    <div class="grid grid-cols-2 gap-4">
+      
+      <!-- Exam Card 1 -->
+      <div class="card card-hover" style="border-color: rgba(99, 102, 241, 0.4);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+          <span class="badge badge-warning">Proctoring Enabled</span>
+          <span style="font-size: 0.85rem; color: var(--secondary); font-weight: 600;">ACTIVE NOW</span>
+        </div>
+        <h3>Quantum Computing Midterm Assessment</h3>
+        <p style="font-size: 0.875rem; margin-top: 0.5rem;">
+          Comprehensive exam covering Hilbert spaces, superposition, entanglement, and quantum gate operations.
+        </p>
+
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin: 1.25rem 0; padding: 0.75rem; background: rgba(0,0,0,0.3); border-radius: var(--radius-sm); text-align: center; font-size: 0.85rem;">
+          <div>
+            <div style="color: var(--text-muted);">Duration</div>
+            <div style="font-weight: 700; color: #fff;">60 Mins</div>
+          </div>
+          <div>
+            <div style="color: var(--text-muted);">Total Marks</div>
+            <div style="font-weight: 700; color: #fff;">50.0</div>
+          </div>
+          <div>
+            <div style="color: var(--text-muted);">Format</div>
+            <div style="font-weight: 700; color: #fff;">MCQ + Essay</div>
+          </div>
+        </div>
+
+        <a href="/learner/exam-start.html?exam_id=demo-exam-01" class="btn btn-primary btn-full">
+          <span>Start System Check</span>
+          <span>→</span>
+        </a>
+      </div>
+
+      <!-- Exam Card 2 -->
+      <div class="card card-hover">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+          <span class="badge badge-info">Quiz</span>
+          <span style="font-size: 0.85rem; color: var(--text-muted);">Scheduled Mar 10, 2026</span>
+        </div>
+        <h3>Neural Network Backpropagation Quiz</h3>
+        <p style="font-size: 0.875rem; margin-top: 0.5rem;">
+          Evaluating gradient descent, loss functions, automatic differentiation, and transformer attention heads.
+        </p>
+
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin: 1.25rem 0; padding: 0.75rem; background: rgba(0,0,0,0.3); border-radius: var(--radius-sm); text-align: center; font-size: 0.85rem;">
+          <div>
+            <div style="color: var(--text-muted);">Duration</div>
+            <div style="font-weight: 700; color: #fff;">30 Mins</div>
+          </div>
+          <div>
+            <div style="color: var(--text-muted);">Total Marks</div>
+            <div style="font-weight: 700; color: #fff;">25.0</div>
+          </div>
+          <div>
+            <div style="color: var(--text-muted);">Format</div>
+            <div style="font-weight: 700; color: #fff;">MCQ Only</div>
+          </div>
+        </div>
+
+        <button class="btn btn-outline btn-full" disabled>
+          <span>Opens on Mar 10</span>
+        </button>
+      </div>
+
+    </div>
+
+  </main>
+
+  <script src="/assets/js/utils.js"></script>
+  <script src="/assets/js/api.js"></script>
+  <script src="/assets/js/auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      Auth.requireAuth(['learner', 'admin']);
+    });
+  </script>
+</body>
+</html>

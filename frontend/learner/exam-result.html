@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Assessment Scorecard & AI Evaluation — AcademiQ</title>
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+  <link rel="stylesheet" href="/assets/css/exam.css">
+</head>
+<body style="min-height: 100vh; display: flex; flex-direction: column;">
+
+  <!-- Simple Header -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="/learner/dashboard.html" class="brand">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--primary);">
+          <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/>
+        </svg>
+        <span>AcademiQ</span>
+        <span class="badge badge-success" style="font-size: 0.65rem;">Graded & Evaluated</span>
+      </a>
+
+      <a href="/learner/dashboard.html" class="btn btn-outline btn-sm">Return to Dashboard</a>
+    </div>
+  </header>
+
+  <main class="container" style="flex: 1; padding: 3rem 1.5rem; max-width: 980px;">
+    
+    <!-- Scorecard Summary Card -->
+    <div class="card" style="margin-bottom: 2.5rem; padding: 2.5rem 2rem; background: linear-gradient(135deg, rgba(22, 30, 49, 0.9) 0%, rgba(15, 21, 35, 0.95) 100%); border-color: rgba(99, 102, 241, 0.3);">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem;">
+        <div>
+          <span class="badge badge-success" style="margin-bottom: 0.5rem;">STATUS: PASSED</span>
+          <h2>Quantum Mechanics Midterm Assessment</h2>
+          <p style="font-size: 0.95rem; margin-top: 0.25rem;">Candidate: Verified Learner • Evaluated by AcademiQ GenAI Grading Engine</p>
+        </div>
+
+        <div style="display: flex; gap: 1.5rem; align-items: center;">
+          <div style="text-align: right;">
+            <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700;">Total Score</div>
+            <div style="font-size: 2.75rem; font-weight: 800; font-family: var(--font-mono); color: var(--primary-light);">15.5 <span style="font-size: 1.25rem; color: var(--text-muted);">/ 17.0</span></div>
+          </div>
+          <div style="text-align: right; padding-left: 1.5rem; border-left: 1px solid var(--border-subtle);">
+            <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700;">Trust Score</div>
+            <div style="font-size: 2.75rem; font-weight: 800; font-family: var(--font-mono); color: var(--success);">98.0%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section Header -->
+    <h3 style="margin-bottom: 1.5rem;">Question Performance & GenAI Feedback</h3>
+
+    <!-- Question 1: MCQ (Correct) -->
+    <div class="card" style="margin-bottom: 1.5rem;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+        <span style="font-weight: 700; color: var(--primary-light);">Question 1 (MCQ)</span>
+        <span class="badge badge-success">+2.0 / 2.0 Marks</span>
+      </div>
+      <p style="font-size: 1.05rem; font-weight: 600; margin-bottom: 1rem;">
+        What mathematical entity represents a pure state in quantum mechanics?
+      </p>
+      <div style="padding: 0.85rem 1rem; border-radius: var(--radius-sm); background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); font-size: 0.9rem; color: #34d399;">
+        ✓ Your Answer: A ray (unit vector) in a complex Hilbert space (Correct)
+      </div>
+    </div>
+
+    <!-- Question 2: MSQ (Correct) -->
+    <div class="card" style="margin-bottom: 1.5rem;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+        <span style="font-weight: 700; color: var(--primary-light);">Question 2 (MSQ)</span>
+        <span class="badge badge-success">+3.0 / 3.0 Marks</span>
+      </div>
+      <p style="font-size: 1.05rem; font-weight: 600; margin-bottom: 1rem;">
+        Select ALL properties that characterize quantum entanglement between two particles:
+      </p>
+      <div style="padding: 0.85rem 1rem; border-radius: var(--radius-sm); background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); font-size: 0.9rem; color: #34d399;">
+        ✓ Correctly selected 3 non-local properties without falling for faster-than-light signaling misconception.
+      </div>
+    </div>
+
+    <!-- Question 3: Text Essay with AI Rubrics & Citation Highlights -->
+    <div class="card" style="margin-bottom: 1.5rem; border-color: rgba(6, 182, 212, 0.35);">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          <span style="font-weight: 700; color: var(--secondary);">Question 3 (Short Essay)</span>
+          <span class="badge badge-info">GenAI Evaluated</span>
+        </div>
+        <span class="badge badge-primary">4.5 / 5.0 Marks</span>
+      </div>
+
+      <p style="font-size: 1.05rem; font-weight: 600; margin-bottom: 1rem;">
+        Explain the concept of quantum superposition. How does wave function collapse occur upon measurement according to the Copenhagen interpretation?
+      </p>
+
+      <!-- Rubrics Breakdown Grid -->
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 1.25rem;">
+        <div style="padding: 0.75rem; background: rgba(15, 21, 35, 0.8); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); text-align: center;">
+          <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Accuracy</div>
+          <div style="font-size: 1.25rem; font-weight: 800; color: var(--success); margin-top: 0.25rem;">2.0 / 2.0</div>
+        </div>
+        <div style="padding: 0.75rem; background: rgba(15, 21, 35, 0.8); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); text-align: center;">
+          <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Completeness</div>
+          <div style="font-size: 1.25rem; font-weight: 800; color: var(--warning); margin-top: 0.25rem;">1.5 / 2.0</div>
+        </div>
+        <div style="padding: 0.75rem; background: rgba(15, 21, 35, 0.8); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); text-align: center;">
+          <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase;">Clarity</div>
+          <div style="font-size: 1.25rem; font-weight: 800; color: var(--success); margin-top: 0.25rem;">1.0 / 1.0</div>
+        </div>
+      </div>
+
+      <!-- AI Feedback Paragraph -->
+      <div style="background: rgba(15, 21, 35, 0.6); padding: 1rem 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-light); margin-bottom: 1.25rem;">
+        <div style="font-weight: 700; font-size: 0.85rem; color: var(--text-primary); margin-bottom: 0.4rem;">GenAI Evaluator Summary:</div>
+        <p style="font-size: 0.9rem; line-height: 1.6; color: var(--text-secondary);">
+          Excellent conceptual articulation of state superposition and projection operators. The submission clearly explains Copenhagen wave function reduction into eigenbases. A minor 0.5 deduction occurred due to omitting the Born probability rule equation (|ψ|²).
+        </p>
+      </div>
+
+      <!-- Citation Highlights Box -->
+      <div class="citation-box">
+        <div style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.75rem;">Your Submission with AI Citation Highlights:</div>
+        <div style="font-size: 0.95rem; line-height: 1.8; color: var(--text-primary);">
+          "Quantum superposition allows a physical system to exist simultaneously in multiple orthogonal eigenstates. 
+          <span class="highlight-earned" title="Earned Marks: Precise definition of projection postulate">When an observable measurement is conducted, the Copenhagen interpretation asserts that the state vector instantaneously projects into one specific eigenvalue</span>. 
+          The wave function collapses from a linear continuum to a definite outcome. 
+          <span class="highlight-lost" title="Missed Scope: Did not explicitly state Born's rule formulation">However, the deterministic transition probabilities were not quantified with the Born square law</span>."
+        </div>
+      </div>
+
+    </div>
+
+    <div style="text-align: center; margin-top: 3rem;">
+      <a href="/learner/dashboard.html" class="btn btn-primary btn-lg">Back to Learner Dashboard</a>
+    </div>
+
+  </main>
+
+  <script src="/assets/js/utils.js"></script>
+  <script src="/assets/js/api.js"></script>
+  <script src="/assets/js/auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      Auth.requireAuth(['learner', 'admin']);
+    });
+  </script>
+</body>
+</html>

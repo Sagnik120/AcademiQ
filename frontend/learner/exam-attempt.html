@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Active Examination — AcademiQ Proctoring</title>
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+  <link rel="stylesheet" href="/assets/css/exam.css">
+</head>
+<body style="background: #080b11; min-height: 100vh; display: flex; flex-direction: column;">
+
+  <!-- Exam Header Bar -->
+  <header class="navbar" style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+    <div class="container nav-container">
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <span style="font-weight: 800; color: #fff; font-size: 1.1rem;">AcademiQ Exam Room</span>
+        <span class="badge badge-warning" id="exam-mode-badge">AI Proctor Active</span>
+      </div>
+
+      <!-- Center: Countdown Timer -->
+      <div style="display: flex; align-items: center; gap: 0.65rem; background: rgba(0,0,0,0.5); padding: 0.4rem 1.25rem; border-radius: var(--radius-full); border: 1px solid var(--border-light);">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--primary-light);">
+          <circle cx="12" cy="12" r="10"/>
+          <polyline points="12 6 12 12 16 14"/>
+        </svg>
+        <span id="timer-display" style="font-size: 1.15rem; font-weight: 800; font-family: var(--font-mono); color: #fff;">60:00</span>
+      </div>
+
+      <div>
+        <button id="btn-open-submit" class="btn btn-danger btn-sm" onclick="examEngine.showSubmitModal()">Finish Exam</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Active Exam Testing Workspace -->
+  <main class="container exam-layout">
+    
+    <!-- Left Column: Active Question Workspace -->
+    <div class="card" style="display: flex; flex-direction: column; justify-content: space-between; min-height: 520px; padding: 2rem;">
+      <div class="question-container">
+        <div class="question-header">
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <span class="question-number" id="q-num-label">Question 1 of 5</span>
+            <span class="badge badge-primary" id="q-type-badge">MCQ</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 1rem;">
+            <span class="question-marks" id="q-marks-label">[2.0 Marks]</span>
+            <button id="btn-flag-toggle" class="btn btn-outline btn-sm" onclick="examEngine.toggleFlag()">☆ Flag for Review</button>
+          </div>
+        </div>
+
+        <div class="question-text" id="q-text-body">
+          Loading question text...
+        </div>
+
+        <!-- Dynamic Answer Container -->
+        <div id="q-answer-container" style="margin-top: 1rem;"></div>
+      </div>
+
+      <!-- Navigation Footer -->
+      <div class="card-footer" style="margin-top: 2rem;">
+        <button id="btn-prev" class="btn btn-outline" onclick="examEngine.prev()" disabled>← Previous</button>
+        <span id="answered-stats-label" style="font-size: 0.85rem; color: var(--text-muted);">0 of 5 Answered</span>
+        <button id="btn-next" class="btn btn-primary" onclick="examEngine.next()">Next Question →</button>
+      </div>
+    </div>
+
+    <!-- Right Column: Proctor Camera Feed & Question Palette -->
+    <div class="proctor-sidebar">
+      
+      <!-- Webcam Feed Card -->
+      <div class="camera-feed-card">
+        <video id="proctor-cam-video" class="camera-feed-video" autoplay playsinline muted></video>
+        <div class="camera-overlay-badge">
+          <div class="recording-dot"></div>
+          <span>LIVE PROCTOR</span>
+        </div>
+      </div>
+
+      <!-- Trust Score Card -->
+      <div class="card trust-score-card">
+        <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); font-weight: 700;">Live Trust Score</div>
+        <div id="live-trust-score" class="trust-score-dial high">100.0%</div>
+        <div style="font-size: 0.75rem; color: var(--text-secondary);">Continuous Biometric & Gaze Check</div>
+      </div>
+
+      <!-- Palette Card -->
+      <div class="card" style="padding: 1rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted);">Question Palette</span>
+        </div>
+        <div class="palette-grid" id="palette-grid"></div>
+        <div style="display: flex; gap: 0.75rem; margin-top: 1rem; font-size: 0.7rem; color: var(--text-muted); justify-content: center;">
+          <span style="display: flex; align-items: center; gap: 0.25rem;"><span style="width: 8px; height: 8px; border-radius: 2px; background: #10b981;"></span> Answered</span>
+          <span style="display: flex; align-items: center; gap: 0.25rem;"><span style="width: 8px; height: 8px; border-radius: 2px; background: #f59e0b;"></span> Flagged</span>
+          <span style="display: flex; align-items: center; gap: 0.25rem;"><span style="width: 8px; height: 8px; border-radius: 2px; background: #6366f1;"></span> Current</span>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Submit Confirmation Modal -->
+  <div class="modal-backdrop" id="submit-confirmation-modal">
+    <div class="modal-dialog">
+      <div style="padding: 2rem;">
+        <h3 style="margin-bottom: 0.75rem;">Submit Assessment?</h3>
+        <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 1.5rem;">
+          Are you sure you want to finish your exam? Once submitted, your responses will be processed by our automated GenAI grading engine and scorecard generation will begin.
+        </p>
+
+        <div style="display: flex; justify-content: flex-end; gap: 1rem;">
+          <button class="btn btn-outline" onclick="closeModal('submit-confirmation-modal')">Continue Testing</button>
+          <button class="btn btn-primary" onclick="examEngine.submitExam()">Confirm & Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-container"></div>
+
+  <script src="/assets/js/utils.js"></script>
+  <script src="/assets/js/api.js"></script>
+  <script src="/assets/js/auth.js"></script>
+  <script src="/assets/js/proctor.js"></script>
+  <script src="/assets/js/exam.js"></script>
+  <script>
+    let examEngine;
+    let proctorManager;
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      Auth.requireAuth(['learner', 'admin']);
+
+      const params = new URLSearchParams(window.location.search);
+      const examId = params.get('exam_id') || 'demo-exam-01';
+      const attemptId = params.get('attempt_id') || 'demo-attempt-01';
+
+      // Initialize Exam and Proctor engines
+      examEngine = new ExamEngine(examId, attemptId);
+      await examEngine.initialize();
+
+      proctorManager = new ProctorManager(attemptId, 'proctor-cam-video', 'live-trust-score');
+      await proctorManager.start();
+    });
+  </script>
+</body>
+</html>

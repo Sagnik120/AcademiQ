@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Learner Dashboard — AcademiQ</title>
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="/index.html" class="brand">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--primary);">
+          <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/>
+        </svg>
+        <span>AcademiQ</span>
+        <span class="badge badge-primary" style="font-size: 0.65rem;">Learner</span>
+      </a>
+
+      <nav class="nav-menu">
+        <a href="/learner/dashboard.html" class="nav-link active">Dashboard</a>
+        <a href="/learner/courses.html" class="nav-link">My Courses</a>
+        <a href="/learner/exams.html" class="nav-link">Exams</a>
+      </nav>
+
+      <div id="navbar-auth-section"></div>
+    </div>
+  </header>
+
+  <!-- Main Dashboard Content -->
+  <main class="container" style="padding: 2.5rem 1.5rem;">
+    
+    <!-- Welcome Header & Stats -->
+    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+      <div>
+        <span class="badge badge-primary" style="margin-bottom: 0.5rem;">Spring Semester 2026</span>
+        <h1 id="welcome-heading">Welcome, Student</h1>
+        <p style="margin-top: 0.25rem;">Monitor your enrolled courses, upcoming proctored exams, and performance metrics.</p>
+      </div>
+      <div>
+        <a href="/learner/courses.html" class="btn btn-outline btn-sm">Explore Courses</a>
+        <a href="/learner/exams.html" class="btn btn-primary btn-sm">Exam Portal</a>
+      </div>
+    </div>
+
+    <!-- Quick Stats Cards -->
+    <div class="grid grid-cols-4 gap-3" style="margin-bottom: 3rem;">
+      <div class="card card-hover">
+        <div style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700;">Enrolled Courses</div>
+        <div id="stat-courses" style="font-size: 2rem; font-weight: 800; font-family: var(--font-mono); color: var(--primary-light); margin-top: 0.25rem;">3</div>
+        <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem;">Active curriculums</div>
+      </div>
+
+      <div class="card card-hover">
+        <div style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700;">Upcoming Exams</div>
+        <div id="stat-upcoming" style="font-size: 2rem; font-weight: 800; font-family: var(--font-mono); color: var(--secondary); margin-top: 0.25rem;">2</div>
+        <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem;">Scheduled this week</div>
+      </div>
+
+      <div class="card card-hover">
+        <div style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700;">Completed Assessments</div>
+        <div id="stat-completed" style="font-size: 2rem; font-weight: 800; font-family: var(--font-mono); color: var(--success); margin-top: 0.25rem;">5</div>
+        <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem;">Evaluated by GenAI</div>
+      </div>
+
+      <div class="card card-hover">
+        <div style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700;">Average Grade</div>
+        <div id="stat-avg" style="font-size: 2rem; font-weight: 800; font-family: var(--font-mono); color: var(--accent-purple); margin-top: 0.25rem;">88.4%</div>
+        <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem;">Pass rate: 100%</div>
+      </div>
+    </div>
+
+    <!-- Active Assessments Banner -->
+    <div class="card" style="margin-bottom: 3rem; border-color: rgba(99, 102, 241, 0.4); background: linear-gradient(135deg, rgba(22, 30, 49, 0.8) 0%, rgba(15, 21, 35, 0.9) 100%);">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <span class="badge badge-warning" style="margin-bottom: 0.5rem;">Proctoring Required</span>
+          <h3>Quantum Computing Midterm Assessment</h3>
+          <p style="font-size: 0.9rem; margin-top: 0.25rem;">Duration: 60 Mins • Questions: 15 (MCQ + Short Essay) • Biometric Proctoring Enabled</p>
+        </div>
+        <div>
+          <a href="/learner/exam-start.html?exam_id=demo-exam-01" class="btn btn-primary btn-lg" id="btn-start-featured-exam">
+            <span>Hardware Check & Start</span>
+            <span>→</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Two-Column Section: Courses & Recent Results -->
+    <div class="grid grid-cols-2 gap-4">
+      
+      <!-- Enrolled Courses -->
+      <div class="card">
+        <div class="card-header">
+          <h4>Enrolled Courses</h4>
+          <a href="/learner/courses.html" style="font-size: 0.85rem;">View All</a>
+        </div>
+        <div class="card-body" id="enrolled-courses-list" style="display: flex; flex-direction: column; gap: 1rem;">
+          <!-- Course Card 1 -->
+          <div style="padding: 1rem; border-radius: var(--radius-md); background: rgba(15, 21, 35, 0.6); border: 1px solid var(--border-subtle);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+              <span style="font-weight: 700; color: var(--text-primary);">Advanced Quantum Mechanics</span>
+              <span class="badge badge-primary">85% Complete</span>
+            </div>
+            <div style="height: 6px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden; margin-bottom: 0.75rem;">
+              <div style="width: 85%; height: 100%; background: var(--primary);"></div>
+            </div>
+            <div style="display: flex; justify-content: space-between; font-size: 0.8rem;">
+              <span>12 of 14 Lectures</span>
+              <a href="/learner/course-content.html?course_id=qc-101">Continue Lecture →</a>
+            </div>
+          </div>
+
+          <!-- Course Card 2 -->
+          <div style="padding: 1rem; border-radius: var(--radius-md); background: rgba(15, 21, 35, 0.6); border: 1px solid var(--border-subtle);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+              <span style="font-weight: 700; color: var(--text-primary);">Machine Learning & Neural Architectures</span>
+              <span class="badge badge-secondary">60% Complete</span>
+            </div>
+            <div style="height: 6px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden; margin-bottom: 0.75rem;">
+              <div style="width: 60%; height: 100%; background: var(--secondary);"></div>
+            </div>
+            <div style="display: flex; justify-content: space-between; font-size: 0.8rem;">
+              <span>9 of 15 Lectures</span>
+              <a href="/learner/course-content.html?course_id=ml-201">Continue Lecture →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Exam Results -->
+      <div class="card">
+        <div class="card-header">
+          <h4>Recent Assessments</h4>
+          <a href="/learner/exams.html" style="font-size: 0.85rem;">Full History</a>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Exam</th>
+                  <th>Score</th>
+                  <th>Trust</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="recent-results-tbody">
+                <tr>
+                  <td>
+                    <div style="font-weight: 600; color: var(--text-primary);">Calculus III Final</div>
+                    <div style="font-size: 0.75rem; color: var(--text-muted);">Feb 28, 2026</div>
+                  </td>
+                  <td><span class="badge badge-success">92 / 100</span></td>
+                  <td><span class="badge badge-primary">98%</span></td>
+                  <td><a href="/learner/exam-result.html?attempt_id=calc-sample" style="font-size: 0.8rem;">Review →</a></td>
+                </tr>
+                <tr>
+                  <td>
+                    <div style="font-weight: 600; color: var(--text-primary);">Algorithms Quiz 2</div>
+                    <div style="font-size: 0.75rem; color: var(--text-muted);">Feb 20, 2026</div>
+                  </td>
+                  <td><span class="badge badge-success">85 / 100</span></td>
+                  <td><span class="badge badge-primary">94%</span></td>
+                  <td><a href="/learner/exam-result.html?attempt_id=algo-sample" style="font-size: 0.8rem;">Review →</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <script src="/assets/js/utils.js"></script>
+  <script src="/assets/js/api.js"></script>
+  <script src="/assets/js/auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const user = Auth.requireAuth(['learner', 'admin']);
+      if (!user) return;
+
+      document.getElementById('welcome-heading').textContent = `Welcome, ${user.first_name || 'Student'}`;
+    });
+  </script>
+</body>
+</html>

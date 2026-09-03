@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pre-Exam Readiness Check — AcademiQ</title>
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+</head>
+<body style="display: flex; flex-direction: column; min-height: 100vh;">
+
+  <!-- Simple Header -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="/learner/dashboard.html" class="brand">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--primary);">
+          <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/>
+        </svg>
+        <span>AcademiQ</span>
+        <span class="badge badge-warning" style="font-size: 0.65rem;">System Readiness Check</span>
+      </a>
+
+      <a href="/learner/exams.html" class="btn btn-ghost btn-sm">Exit to Exams</a>
+    </div>
+  </header>
+
+  <main class="container" style="flex: 1; padding: 3rem 1.5rem; max-width: 900px;">
+    
+    <div style="text-align: center; margin-bottom: 2.5rem;">
+      <span class="badge badge-primary" style="margin-bottom: 0.5rem;">Pre-Flight Diagnostics</span>
+      <h2>System & Hardware Readiness Check</h2>
+      <p style="font-size: 1rem; color: var(--text-secondary); margin-top: 0.25rem;">
+        AcademiQ requires webcam and microphone access to perform real-time biometric and head-pose proctoring.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4" style="margin-bottom: 2rem;">
+      
+      <!-- Video Preview Card -->
+      <div class="card" style="padding: 1.25rem;">
+        <h4 style="margin-bottom: 0.75rem;">1. Camera Diagnostics</h4>
+        <div style="aspect-ratio: 4/3; width: 100%; border-radius: var(--radius-md); overflow: hidden; background: #000; position: relative; border: 1px solid var(--border-light);">
+          <video id="preview-video" autoplay playsinline muted style="width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1);"></video>
+          <div id="camera-status-overlay" style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(0,0,0,0.85); gap: 0.75rem;">
+            <button id="btn-request-cam" class="btn btn-primary btn-sm">Allow Camera Access</button>
+            <span style="font-size: 0.75rem; color: var(--text-muted);">Permission required for proctoring</span>
+          </div>
+        </div>
+        <div id="cam-indicator" style="font-size: 0.85rem; margin-top: 0.75rem; color: var(--warning); display: flex; align-items: center; gap: 0.5rem;">
+          <span>⚠</span>
+          <span>Webcam not yet initialized</span>
+        </div>
+      </div>
+
+      <!-- Guidelines Card -->
+      <div class="card" style="padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+          <h4 style="margin-bottom: 0.75rem;">2. Assessment Rules</h4>
+          <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.875rem; color: var(--text-secondary);">
+            <li style="display: flex; gap: 0.5rem;">
+              <span style="color: var(--success); font-weight: 700;">✓</span>
+              <span><strong>Face Forward:</strong> Keep your face centered in the camera frame. Looking away triggers warnings.</span>
+            </li>
+            <li style="display: flex; gap: 0.5rem;">
+              <span style="color: var(--success); font-weight: 700;">✓</span>
+              <span><strong>Single Candidate:</strong> Multiple persons detected in the room will result in immediate flagging.</span>
+            </li>
+            <li style="display: flex; gap: 0.5rem;">
+              <span style="color: var(--danger); font-weight: 700;">✕</span>
+              <span><strong>No Tab Switching:</strong> Leaving or unfocusing the exam window records an automatic deduction.</span>
+            </li>
+            <li style="display: flex; gap: 0.5rem;">
+              <span style="color: var(--danger); font-weight: 700;">✕</span>
+              <span><strong>No Mobile Devices:</strong> Mobile phones or headphones are detected by ML proctoring.</span>
+            </li>
+          </ul>
+        </div>
+
+        <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border-subtle);">
+          <label style="display: flex; align-items: center; gap: 0.65rem; font-size: 0.85rem; cursor: pointer; user-select: none;">
+            <input type="checkbox" id="check-rules-agree" style="width: 18px; height: 18px; accent-color: var(--primary);">
+            <span>I acknowledge and accept the academic integrity rules</span>
+          </label>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Final Launch Button -->
+    <div style="text-align: center;">
+      <button id="btn-launch-exam" class="btn btn-primary btn-lg" style="padding: 0.85rem 3rem;" disabled>
+        <span>Enter Fullscreen & Launch Exam</span>
+        <span>⚡</span>
+      </button>
+      <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.5rem;">
+        Clicking launch will activate browser fullscreen mode.
+      </div>
+    </div>
+
+  </main>
+
+  <script src="/assets/js/utils.js"></script>
+  <script src="/assets/js/api.js"></script>
+  <script src="/assets/js/auth.js"></script>
+  <script>
+    let streamReady = false;
+
+    async function initCamera() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: { width: { ideal: 640 }, height: { ideal: 480 } },
+          audio: false
+        });
+        const video = document.getElementById('preview-video');
+        video.srcObject = stream;
+        document.getElementById('camera-status-overlay').style.display = 'none';
+        
+        const ind = document.getElementById('cam-indicator');
+        ind.style.color = 'var(--success)';
+        ind.innerHTML = '<span>✓</span><span>Camera stream verified & ready</span>';
+        streamReady = true;
+        checkReadyState();
+      } catch (err) {
+        showToast('Camera permission denied or device not found', 'error');
+      }
+    }
+
+    function checkReadyState() {
+      const agreed = document.getElementById('check-rules-agree').checked;
+      document.getElementById('btn-launch-exam').disabled = !(streamReady && agreed);
+    }
+
+    document.getElementById('btn-request-cam').addEventListener('click', initCamera);
+    document.getElementById('check-rules-agree').addEventListener('change', checkReadyState);
+
+    document.getElementById('btn-launch-exam').addEventListener('click', async () => {
+      try {
+        if (document.documentElement.requestFullscreen) {
+          await document.documentElement.requestFullscreen();
+        }
+      } catch (e) {
+        console.warn('Fullscreen request bypassed:', e);
+      }
+      
+      const urlParams = new URLSearchParams(window.location.search);
+      const examId = urlParams.get('exam_id') || 'demo-exam-01';
+      window.location.href = `/learner/exam-attempt.html?exam_id=${examId}`;
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      Auth.requireAuth(['learner', 'admin']);
+      initCamera();
+    });
+  </script>
+</body>
+</html>

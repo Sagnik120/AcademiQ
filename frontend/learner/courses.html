@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Course Catalog — AcademiQ</title>
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="/index.html" class="brand">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--primary);">
+          <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/>
+        </svg>
+        <span>AcademiQ</span>
+        <span class="badge badge-primary" style="font-size: 0.65rem;">Courses</span>
+      </a>
+
+      <nav class="nav-menu">
+        <a href="/learner/dashboard.html" class="nav-link">Dashboard</a>
+        <a href="/learner/courses.html" class="nav-link active">Catalog</a>
+        <a href="/learner/exams.html" class="nav-link">Exams</a>
+      </nav>
+
+      <div id="navbar-auth-section"></div>
+    </div>
+  </header>
+
+  <main class="container" style="padding: 2.5rem 1.5rem;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+      <div>
+        <span class="badge badge-primary" style="margin-bottom: 0.5rem;">Curriculum Discovery</span>
+        <h1>Explore Academic Courses</h1>
+        <p style="margin-top: 0.25rem;">Browse interactive university-level courses, lecture notes, and proctored examinations.</p>
+      </div>
+
+      <!-- Search Box -->
+      <div style="width: 320px;">
+        <input type="text" id="course-search-input" class="form-control" placeholder="Search courses or topics...">
+      </div>
+    </div>
+
+    <!-- Course Grid -->
+    <div class="grid grid-cols-3 gap-3" id="course-catalog-grid">
+      
+      <!-- Course 1 -->
+      <div class="card card-hover" style="display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+            <span class="badge badge-primary">Physics</span>
+            <span style="font-size: 0.8rem; color: var(--text-muted);">14 Lectures</span>
+          </div>
+          <h3>Advanced Quantum Mechanics</h3>
+          <p style="font-size: 0.875rem; margin-top: 0.5rem;">
+            Comprehensive study of Hilbert space, superposition, entangled states, and quantum gate operations.
+          </p>
+        </div>
+        <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-size: 0.8rem; color: var(--text-muted);">Prof. E. Schrödinger</span>
+          <a href="/learner/course-detail.html?course_id=qc-101" class="btn btn-outline btn-sm">View Syllabus →</a>
+        </div>
+      </div>
+
+      <!-- Course 2 -->
+      <div class="card card-hover" style="display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+            <span class="badge badge-secondary">AI & ML</span>
+            <span style="font-size: 0.8rem; color: var(--text-muted);">18 Lectures</span>
+          </div>
+          <h3>Neural Architectures & Transformers</h3>
+          <p style="font-size: 0.875rem; margin-top: 0.5rem;">
+            Deep dive into multi-head self-attention mechanisms, encoder-decoder transformers, and foundational LLM architectures.
+          </p>
+        </div>
+        <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-size: 0.8rem; color: var(--text-muted);">Dr. A. Vaswani</span>
+          <a href="/learner/course-detail.html?course_id=ml-201" class="btn btn-outline btn-sm">View Syllabus →</a>
+        </div>
+      </div>
+
+      <!-- Course 3 -->
+      <div class="card card-hover" style="display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+            <span class="badge badge-info">Computer Science</span>
+            <span style="font-size: 0.8rem; color: var(--text-muted);">12 Lectures</span>
+          </div>
+          <h3>Distributed Systems & Consensus</h3>
+          <p style="font-size: 0.875rem; margin-top: 0.5rem;">
+            Raft and Paxos consensus algorithms, CAP theorem tradeoffs, and fault-tolerant replicated state machines.
+          </p>
+        </div>
+        <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-size: 0.8rem; color: var(--text-muted);">Prof. L. Lamport</span>
+          <a href="/learner/course-detail.html?course_id=ds-301" class="btn btn-outline btn-sm">View Syllabus →</a>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <script src="/assets/js/utils.js"></script>
+  <script src="/assets/js/api.js"></script>
+  <script src="/assets/js/auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      Auth.requireAuth(['learner', 'admin']);
+
+      // Filter search
+      const searchInput = document.getElementById('course-search-input');
+      searchInput.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase();
+        const cards = document.querySelectorAll('#course-catalog-grid .card');
+        cards.forEach(card => {
+          const text = card.textContent.toLowerCase();
+          card.style.display = text.includes(query) ? 'flex' : 'none';
+        });
+      });
+    });
+  </script>
+</body>
+</html>
